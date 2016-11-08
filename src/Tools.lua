@@ -4,8 +4,10 @@
 -- GeekBucket 2016
 ---------------------------------------------------------------------------------
 
+local widget = require( "widget" )
 local composer = require( "composer" )
 local Globals = require( "src.Globals" )
+local Sprites = require('src.Sprites')
 require('src.Menu')
 
 
