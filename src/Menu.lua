@@ -27,8 +27,8 @@ local scene = composer.newScene()
 -- Tmp
 -- @param event objeto evento
 ------------------------------------
-function tmp(event)
-    
+function dayPray(event)
+    composer.gotoScene("src.Card", { time = 400, effect = "slideLeft", params = { item = 8 } } )
 end
 
 ---------------------------------------------------------------------------------
@@ -102,6 +102,10 @@ function scene:create( event )
         lblMenu.anchorX = 1
         lblMenu:setFillColor( unpack(cPurple) )
         screen:insert(lblMenu)
+        
+        if i == 1 then
+            bgM2:addEventListener( 'tap', dayPray)
+        end
         
         menuY = menuY + 110
     end

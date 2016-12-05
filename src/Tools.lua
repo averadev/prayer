@@ -4,10 +4,8 @@
 -- GeekBucket 2016
 ---------------------------------------------------------------------------------
 
-local widget = require( "widget" )
 local composer = require( "composer" )
 local Globals = require( "src.Globals" )
-local Sprites = require('src.Sprites')
 require('src.Menu')
 
 
@@ -15,7 +13,7 @@ Tools = {}
 function Tools:new()
     -- Variables
     local self = display.newGroup()
-    local bgShadow
+    local bgShadow, iconPlaying
     self.y = h
     
     -------------------------------------
@@ -54,6 +52,25 @@ function Tools:new()
             self:insert( iconMenuCal )
         end 
         
+        iconPlaying = display.newImage("img/iconPlaying.png")
+        iconPlaying.alpha = 0
+        iconPlaying:translate( intW - 40, 35)
+        iconPlaying:addEventListener( 'tap', getPlaying)
+        self:insert( iconPlaying )
+        
+    end
+    
+    -------------------------------------
+    -- Creamos el top bar
+    -- @param isWelcome boolean pantalla principal
+    ------------------------------------ 
+    function self:getIcon()
+        iconPlaying.alpha = 1
+    end
+    
+    -- Cambia pantalla
+    function getPlaying(event)
+        composer.gotoScene("src.Card", { time = 400, effect = "slideLeft", params = { item = idxP } } )
     end
     
     -- Cambia pantalla
@@ -65,9 +82,6 @@ function Tools:new()
     -- Cambia pantalla
     function toScreen(event)
         local t = event.target
-        if t.screen == "Card" then 
-            composer.removeScene( "src."..t.screen ) 
-        end
         composer.gotoScene("src."..t.screen, { time = 400, effect = t.animation, params = { item = t.item } } )
         return true
     end

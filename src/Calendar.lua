@@ -15,10 +15,11 @@ local Globals = require( "src.Globals" )
 
 -- Grupos y Contenedores
 local screen
+local tools = Tools:new()
 local scene = composer.newScene()
 
 -- Variables
-local scCalendar
+local scCalendar, bgSelected
 
 ---------------------------------------------------------------------------------
 -- FUNCIONES
@@ -114,7 +115,6 @@ function scene:create( event )
     screen:insert(bgScr)
     
     -- Background
-	tools = Tools:new()
     tools:buildHeader()
     screen:insert(tools)
     
@@ -129,13 +129,39 @@ function scene:create( event )
     })
     screen:insert(scCalendar)
     
-    getDates(lstDays)
+    bgSelected = display.newRoundedRect( 130, 130, 210, 240, 5 )
+    bgSelected.alpha = .8
+    bgSelected:setFillColor( unpack(cBlack) )
+    scCalendar:insert(bgSelected)
     
+    getDates(lstDays)
+    -- Set new scroll position
+    scCalendar:setScrollHeight(((250 * #lstDays) / 2) + 10)
 end	
 
 -- Called immediately after scene has moved onscreen:
 function scene:show( event )
     if event.phase == "will" then
+        local res = idxC % 2
+        local posY = (idxC + res) / 2
+        posY = (250 * posY) - 120
+        
+        if res == 1 then
+            bgSelected.x = 130
+        else
+            bgSelected.x = 355
+        end
+        bgSelected.y = posY
+        
+        local toY = (posY * -1) + 130
+        scCalendar:scrollToPosition({
+            y = toY,
+            time = 0
+        })
+        
+        if idxP > 0 then
+            tools:getIcon()            
+        end
     end
 end
 
