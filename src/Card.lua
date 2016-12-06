@@ -9,15 +9,18 @@
 ---------------------------------------------------------------------------------
 -- Includes
 require('src.Tools')
-require('src.Globals')
+require('src.resources.Globals')
 local widget = require( "widget" )
 local composer = require( "composer" )
-local Sprites = require('src.Sprites')
+local Sprites = require('src.resources.Sprites')
+local DBManager = require('src.resources.DBManager')
+local RestManager = require('src.resources.RestManager')
 
 -- Grupos y Contenedores
 local screen, grpDays
 local tools = Tools:new()
 local scene = composer.newScene()
+local groupLoading
 
 -- Variables
 local cards = {}
@@ -29,6 +32,20 @@ local tmrPlaying, jumpProgress
 ---------------------------------------------------------------------------------
 -- FUNCIONES
 ---------------------------------------------------------------------------------
+
+-------------------------------------
+-- Carga los audios 
+------------------------------------
+function returnAudioCard( items )
+
+	for i = 1, #items, 1 do
+		local item = items[i]
+		lstDays[i] = {day = item.weekday, noDate = item.day, month = item.month, date = item.day_date, title = item.day_shortdesc, subtitle = item.day_shortdesc, file = item.audio, fav = false, detail = item.day_longdesc}
+	end
+	
+	createNavigationPlay()
+	
+end
 
 -------------------------------------
 -- Mueve la navegacion
@@ -401,23 +418,9 @@ function getCard()
     cards[idxC]:setScrollHeight(control[idxC].lblDetail.height + posY + 160)
 end
 
----------------------------------------------------------------------------------
--- DEFAULT METHODS
----------------------------------------------------------------------------------
-
-function scene:create( event )
-	screen = self.view
-    
-    local bgScr = display.newRect( midW, h, intW, intH )
-    bgScr.anchorY = 0
-    bgScr:setFillColor( unpack(cGrayL) )
-    screen:insert(bgScr)
-    
-    -- Background
-    tools:buildHeader()
-    screen:insert(tools)
-    
-     -- Navigation
+function createNavigationPlay()
+	
+	 -- Navigation
     local bgScr = display.newRect( midW, h+70, intW, 80 )
     bgScr.anchorY = 0
     bgScr:setFillColor( unpack(cWhite) )
@@ -438,7 +441,29 @@ function scene:create( event )
     imgNext:translate(midW + 85, h+100)
     imgNext.rotation = 180
     screen:insert( imgNext )
-    
+	
+	local date = os.date( "*t" )    -- Returns table of date & time values 
+	local year = date.year
+	local month = date.month
+	local day = date.day
+	if day < 10 then
+		day = "0" ..day
+	end
+	if month < 10 then
+		month = "0" ..month
+	end
+	
+	local currentDate = year .. "-" .. month .. "-" .. day .. " 00:00:00"
+	
+	idxC = 1
+	
+	for i = 1, #lstDays, 1 do
+		if lstDays[i].date  == currentDate then
+			idxC = i
+		end
+		--if currentDate == lstDays[i].day_date
+	end
+	
     grpDays = display.newGroup()
     screen:insert(grpDays)
     
@@ -452,13 +477,142 @@ function scene:create( event )
         lblDay:setFillColor( unpack(cPurple) )
         grpDays:insert(lblDay)
     end
+	
+	grpDays.x = (idxC * -160) + 320
+	moveNav()
+	
+	if not(cards[idxC]) then
+		getCard()
+	end
+	cards[idxC].x = 240
+	
+	--[[local tmpDay = -7
+	local DAY = 86400
+	local now = os.time()
+	local curTime = 0
+	
+	for i = 1, #lstDays, 1 do 
+		curTime = now + (DAY * tmpDay)
+		lstDays[i].day = lstDay[os.date( '%w', curTime ) + 1]
+		lstDays[i].noDate = os.date( '%d', curTime )
+		lstDays[i].month = lstMonth[tonumber(os.date( '%m', curTime ))]
+		if tmpDay == 0 then lstDays[i].day = 'Hoy' end 
+		tmpDay = tmpDay + 1
+		print(" ")
+		print(os.date( '%d', curTime ))
+		print(" ")
+	end]]
+	
+	
+end
+
+--------------------------------------------
+-- comprueba si existe conexion a internet
+--------------------------------------------
+function isNetworkConnection()
+	local netConn = require('socket').connect('www.google.com', 80)
+	if netConn == nil then
+		return false
+	end
+	netConn:close()
+	return true
+end
+
+--------------------------------------------
+-- Muestra un mensaje cuando no se encontro conexion a internet
+--------------------------------------------
+function messageNoConnection()
+	
+	tools:setLoading( false, groupLoading )
+	
+	if not groupLoading then
+		groupLoading = display.newGroup()
+		screen:insert( groupLoading )
+	end
+	
+	groupLoading.y =  70 + h
+	
+	local lblNoConnection = display.newText({
+        text = "La aplicacion necesita conexion a internet",
+        y = 110,
+        x = midW, width = intW-100,
+        font = fMonRegular, 
+        fontSize = 20, align = "center"
+    })
+    lblNoConnection:setFillColor( unpack(cBlack) )
+    groupLoading:insert(lblNoConnection)
+	
+	local btnNoConnection = display.newRoundedRect( midW, 250, intW - 50, 70, 5 )
+    btnNoConnection:setFillColor( unpack(cPurple) )
+    groupLoading:insert(btnNoConnection)
+	btnNoConnection:addEventListener( 'tap', detectNetworkConnection )
+	
+	
+	local lblRefresh = display.newText({
+        text = "ACTUALIZAR",
+        y = 250,
+        x = midW, width = intW-100,
+        font = fMonRegular, 
+        fontSize = 20, align = "center"
+    })
+    lblRefresh:setFillColor( unpack(cWhite) )
+    groupLoading:insert(lblRefresh)
+	
+end
+
+function detectNetworkConnection( )
+
+	tools:setLoading( true, groupLoading )
+	
+	if ( isNetworkConnection() ) then
+		--RestManager.getAudios()
+		local getAudios = DBManager.getAudios()
+		returnAudioCard( getAudios )
+	else
+		local getAudios = DBManager.getAudios()
+		if not getAudios then
+			messageNoConnection()
+		elseif #getAudios > 0 then
+			returnAudioCard( getAudios )
+		end
+	end
+	
+end
+
+
+---------------------------------------------------------------------------------
+-- DEFAULT METHODS
+---------------------------------------------------------------------------------
+
+function scene:create( event )
+	screen = self.view
+    
+    local bgScr = display.newRect( midW, h, intW, intH )
+    bgScr.anchorY = 0
+    bgScr:setFillColor( unpack(cGrayL) )
+    screen:insert(bgScr)
+    
+    -- Background
+    tools:buildHeader()
+    screen:insert(tools)
+	
+	groupLoading = display.newGroup()
+	groupLoading.y = midH + ( 70 + h )
+	screen:insert( groupLoading )
+	
+	
+	
+	detectNetworkConnection()
+	
+	--createNavigationPlay()
     
 end	
 
 -- Called immediately after scene has moved onscreen:
 function scene:show( event )
     if event.phase == "will" then
-        if event.params then
+		
+        --[[if event.params then
             idxC = event.params.item
             grpDays.x = (idxC * -160) + 320
             moveNav()
@@ -468,13 +622,13 @@ function scene:show( event )
             cards[idxC].x = 240
         else
             cards[idxC].x = 240
-        end
+        end]]
     end
 end
 
 -- Remove Listener
 function scene:hide( event )
-    cards[idxC].x = 720
+    --cards[idxC].x = 720
 end
 
 -- Listener setup

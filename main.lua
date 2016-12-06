@@ -9,8 +9,11 @@ display.setStatusBar( display.DarkStatusBar )
 display.setDefault( "background", 1, 1, 1 )
 
 
-require('src.Globals')
+require('src.resources.Globals')
 local composer = require( "composer" )
+local DBManager = require('src.resources.DBManager')
+
+local isUser = DBManager.setupSquema()
 
 -- Temporal
 local tmpDay = -7
@@ -25,11 +28,12 @@ for i = 1, #lstDays, 1 do
     lstDays[i].month = lstMonth[tonumber(os.date( '%m', curTime ))]
     if tmpDay == 0 then lstDays[i].day = 'Hoy' end 
     tmpDay = tmpDay + 1
+	print(curTime)
 end
 
-
 --composer.gotoScene("src.Calendar")
-composer.gotoScene("src.Card", {params = { item = 8 }} )
+composer.gotoScene("src.Card" )
+--composer.gotoScene("src.Card", {params = { item = 8 }} )
 
 --[[
 local systemFonts = native.getFontNames()

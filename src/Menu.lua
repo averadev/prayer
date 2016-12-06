@@ -9,7 +9,7 @@
 ---------------------------------------------------------------------------------
 -- Includes
 local composer = require( "composer" )
-local Globals = require( "src.Globals" )
+local Globals = require( "src.resources.Globals" )
 
 -- Grupos y Contenedores
 local screen

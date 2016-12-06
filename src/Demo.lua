@@ -10,8 +10,8 @@
 -- Includes
 require('src.Tools')
 local composer = require( "composer" )
-local Globals = require( "src.Globals" )
-local Sprites = require('src.Sprites')
+local Globals = require( "src.resources.Globals" )
+local Sprites = require('src.resources.Sprites')
 
 -- Grupos y Contenedores
 local screen
