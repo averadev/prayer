@@ -63,6 +63,91 @@ function returnAudioCard( items )
 	
 end
 
+function deleteFile(event)
+   print('Eliminando '..event.target.id_day)
+end
+function dowloadFile(event)
+    local params = {}
+    params.progress = true
+   print('Descargando '..event.target.id_day)
+   network.download(
+    "http://docs.coronalabs.com/images/simulator/image-mask-base2.png",
+    "GET",
+    networkListener,
+    params,
+    "helloCopy.png",
+    system.TemporaryDirectory
+    )
+end
+
+function networkListener( event )
+    if ( event.isError ) then
+        print( "Network error - download failed: ", event.response )
+    elseif ( event.phase == "began" ) then
+        print( "Progress Phase: began" )
+    elseif ( event.phase == "ended" ) then
+        print( "Displaying response image file" )
+        myImage = display.newImage( event.response.filename, event.response.baseDirectory, 60, 40 )
+        myImage.alpha = 0
+        transition.to( myImage, { alpha=1.0 } )
+        cards[idxC]:insert(myImage)
+        
+        -- control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
+        -- control[idxP].audio:load( "http://192.168.1.71/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
+        -- control[idxP].audio:addEventListener( "video", videoListener )
+        -- control[idxP].audio:play()
+    end
+end
+
+function cloudIcon(item)
+    if item.fav then
+        local iconADown = display.newImage("img/iconADownT.png")
+        iconADown:translate(intW - 120, 35)
+        iconADown.id_day = item.id_day
+        iconADown.posicion =  cards[idxC]
+        iconADown:addEventListener( 'tap', deleteFile)
+        cards[idxC]:insert( iconADown )
+    else
+        local iconADown = display.newImage("img/iconADown.png")
+        iconADown:translate(intW - 120, 35)
+        iconADown.id_day = item.id_day
+        iconADown.posicion =  cards[idxC]
+        iconADown:addEventListener( 'tap', dowloadFile)
+        cards[idxC]:insert( iconADown )
+    end
+end
+
+function favIcon(item)
+    if item.fav then
+        local sheet, loading
+        sheet = graphics.newImageSheet(Sprites.liked.source, Sprites.liked.frames)
+        liked = display.newSprite(sheet, Sprites.liked.sequences)
+
+        liked.x = intW - 45
+        liked.y = 58
+        liked.anchorY = 1
+        liked.id_day = item.id_day
+        liked.posicion =  cards[idxC]
+        liked:addEventListener( 'tap', deleteFav)
+        cards[idxC]:insert(liked)
+        liked:setSequence("like")
+        --liked:like()
+    else
+        local sheet, loading
+        sheet = graphics.newImageSheet(Sprites.liked.source, Sprites.liked.frames)
+        liked = display.newSprite(sheet, Sprites.liked.sequences)
+
+        liked.x = intW - 45
+        liked.y = 58
+        liked.anchorY = 1
+        liked.id_day = item.id_day
+        liked.posicion =  cards[idxC]
+        liked:addEventListener( 'tap', saveFav)
+        cards[idxC]:insert(liked)
+        liked:setSequence("dislike")
+
+    end
+end
 function deleteFav(event)
     id = event.target.id_day
     posicion = event.target.posicion
@@ -77,7 +162,7 @@ function deleteFav(event)
     ID_D = system.getInfo("deviceID")
     print("Borrando de favoritos")
     print(id)
-    --RestManager.saveFav(id)
+    RestManager.deleteFav(id)
 end
 
 function saveFav(event)
@@ -94,7 +179,7 @@ function saveFav(event)
     ID_D = system.getInfo("deviceID")
     print("Guardado como favorito")
     print(ID_D)
-    -- RestManager.saveFav(id)
+    RestManager.saveFav(id)
 end
 
 -------------------------------------
@@ -198,10 +283,17 @@ function nextAudio()
     control[idxP].bgBarC.width = (jumpProgress*cntTime)
 end
 
+function setEventosBotones()
+    control[idxC].prev.alpha = 1
+    control[idxC].next.alpha = 1
+    control[idxC].prev:addEventListener( 'tap', prevAudio)
+    control[idxC].next:addEventListener( 'tap', nextAudio)
+end
 -------------------------------------
 -- Obtiene tarjeta
 ------------------------------------
 function playAudio()
+    setEventosBotones()
     if control[idxC].audio then
         control[idxP].audio:play()
         control[idxP].play.alpha = 0
@@ -260,7 +352,7 @@ function playAudio()
         
         -- Load a remote audio
         control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
-        control[idxP].audio:load( "http://geekbucket.com.mx/audio/"..lstDays[idxC].file, media.RemoteSource )
+        control[idxP].audio:load( "http://192.168.1.71/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
         control[idxP].audio:addEventListener( "video", videoListener )
         control[idxP].audio:play()
     end
@@ -323,25 +415,10 @@ function getCard()
     bgAct:setFillColor( unpack(cPurpleH) )
     cards[idxC]:insert(bgAct)
     
-    local iconADown = display.newImage("img/iconADown.png")
-    iconADown:translate(intW - 120, 35)
-    cards[idxC]:insert( iconADown )
+    
+    cloudIcon(item)
+    favIcon(item)
 
-    if item.fav then
-        local iconAFav = display.newImage("img/iconAFavT.png")
-        iconAFav:translate(intW - 45, 35)
-        iconAFav.id_day = item.id_day
-        iconAFav.posicion =  cards[idxC]
-        iconAFav:addEventListener( 'tap', deleteFav)
-        cards[idxC]:insert( iconAFav )
-    else
-        local iconAFav = display.newImage("img/iconAFav.png")
-        iconAFav:translate(intW - 45, 35)
-        iconAFav.id_day = item.id_day
-        iconAFav.posicion =  cards[idxC]
-        iconAFav:addEventListener( 'tap', saveFav)
-        cards[idxC]:insert( iconAFav )
-    end
     
     -- Desc Section
     local bgDesc = display.newRect( midW, 70, intW, 170 )
@@ -411,14 +488,14 @@ function getCard()
     cards[idxC]:insert(control[idxC].loading)
     
     control[idxC].prev = display.newImage("img/iconPDArrow.png")
+    control[idxC].prev.alpha = .5
     control[idxC].prev:translate(midW - 110, posY + 50)
-    control[idxC].prev:addEventListener( 'tap', prevAudio)
     cards[idxC]:insert( control[idxC].prev )
     
     control[idxC].next = display.newImage("img/iconPDArrow.png")
     control[idxC].next:translate(midW + 110, posY + 50)
+    control[idxC].next.alpha = .5
     control[idxC].next.rotation = 180
-    control[idxC].next:addEventListener( 'tap', nextAudio)
     cards[idxC]:insert( control[idxC].next )
     
     -- Progress Bar

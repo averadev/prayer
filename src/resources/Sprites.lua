@@ -15,4 +15,11 @@ Sprites.loading = {
   }
 }
 
+Sprites.liked = {
+  source = "img/sprFav.png",
+  sequences = {
+  }
+}
+
+
 return Sprites

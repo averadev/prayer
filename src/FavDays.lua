@@ -129,7 +129,7 @@ function getDates(items)
     end
 end
 function messageNoFav()
-    bgSelected:removeSelf();
+    --bgSelected:removeSelf();
     tools:setLoading( false, groupLoading )
     
     if not groupLoading then
@@ -179,22 +179,23 @@ function scene:create( event )
     })
     screen:insert(scCalendar)
     
-    bgSelected = display.newRoundedRect( 130, 130, 210, 240, 5 )
-    bgSelected.alpha = .8
-    bgSelected:setFillColor( unpack(cBlack) )
-    scCalendar:insert(bgSelected)
+    -- bgSelected = display.newRoundedRect( 130, 130, 210, 240, 5 )
+    -- bgSelected.alpha = .8
+    -- bgSelected:setFillColor( unpack(cBlack) )
+    -- scCalendar:insert(bgSelected)
     
     local favDays = DBManager.getAudiosFav()
     if not favDays then
         messageNoFav()
     elseif #favDays > 0 then
         favoriteDays(favDays)
+        scCalendar:setScrollHeight(((250 * #favDays) / 2) + 10)
     end
     -- favoriteDays(getAudios)
     
     
     -- Set new scroll position
-    scCalendar:setScrollHeight(((250 * #favDays) / 2) + 10)
+    
 end	
 
 -- Called immediately after scene has moved onscreen:
@@ -204,12 +205,12 @@ function scene:show( event )
         local posY = (idxC + res) / 2
         posY = (250 * posY) - 120
         
-        if res == 1 then
-            bgSelected.x = 130
-        else
-            bgSelected.x = 355
-        end
-        bgSelected.y = posY
+        -- if res == 1 then
+        --     bgSelected.x = 130
+        -- else
+        --     bgSelected.x = 355
+        -- end
+        -- bgSelected.y = posY
         
         local toY = (posY * -1) + 130
         scCalendar:scrollToPosition({

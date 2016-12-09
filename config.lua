@@ -12,3 +12,13 @@ application = {
         height = display.pixelHeight / mediaRes
 	}
 }
+settings =
+{
+   android =
+   {
+      usesPermissions =
+      {
+         "android.permission.INTERNET",
+      },
+   },
+}

@@ -85,7 +85,7 @@ function scene:create( event )
     local menuY = h + 80
     local menuA = {
         {'iconDay','DayPray','Oración del Día'},
-        {'iconConfig','DayPray','Favoritos'},
+        {'iconLiked','DayPray','Favoritos'},
         {'iconHow','HowPray','¿Comó Orar?'},
         {'iconDonation','Donation','Donaciones'},
         {'iconConfig','Config','Configuración'}}
