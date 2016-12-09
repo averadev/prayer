@@ -21,14 +21,27 @@ local scene = composer.newScene()
 ---------------------------------------------------------------------------------
 -- FUNCIONES
 ---------------------------------------------------------------------------------
-
-
 -------------------------------------
 -- Tmp
 -- @param event objeto evento
 ------------------------------------
 function dayPray(event)
     composer.gotoScene("src.Card", { time = 400, effect = "slideLeft", params = { item = 8 } } )
+end
+function favoriteDays(event)
+    composer.gotoScene("src.FavDays", { time = 400, effect = "slideLeft", params = { item = nil } } )
+end
+
+function setTapListener(posicion, elemento)
+    if posicion == 1 then
+        elemento:addEventListener( 'tap', dayPray)
+    end
+    if posicion == 2 then
+        elemento:addEventListener( 'tap', favoriteDays)
+    end
+    if posicion == 3 then
+        elemento:addEventListener( 'tap', dayPray)
+    end
 end
 
 ---------------------------------------------------------------------------------
@@ -72,6 +85,7 @@ function scene:create( event )
     local menuY = h + 80
     local menuA = {
         {'iconDay','DayPray','Oración del Día'},
+        {'iconConfig','DayPray','Favoritos'},
         {'iconHow','HowPray','¿Comó Orar?'},
         {'iconDonation','Donation','Donaciones'},
         {'iconConfig','Config','Configuración'}}
@@ -103,9 +117,7 @@ function scene:create( event )
         lblMenu:setFillColor( unpack(cPurple) )
         screen:insert(lblMenu)
         
-        if i == 1 then
-            bgM2:addEventListener( 'tap', dayPray)
-        end
+        setTapListener(i, bgM2)
         
         menuY = menuY + 110
     end

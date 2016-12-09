@@ -40,11 +40,61 @@ function returnAudioCard( items )
 
 	for i = 1, #items, 1 do
 		local item = items[i]
-		lstDays[i] = {day = item.weekday, noDate = item.day, month = item.month, date = item.day_date, title = item.day_shortdesc, subtitle = item.day_shortdesc, file = item.audio, fav = false, detail = item.day_longdesc}
+        local liked = false
+        if (item.fav == 1) then
+            liked = true
+        end
+
+		lstDays[i] = {
+            id_day = item.id_day,
+            day = item.weekday,
+            noDate = item.day,
+            month = item.month,
+            date = item.day_date,
+            title = item.day_shortdesc,
+            subtitle = item.day_shortdesc,
+            file = item.audio,
+            fav = liked,
+            detail = item.day_longdesc
+        }
 	end
 	
 	createNavigationPlay()
 	
+end
+
+function deleteFav(event)
+    id = event.target.id_day
+    posicion = event.target.posicion
+
+    -- local iconAFav = display.newImage("img/iconAFav.png")
+    -- iconAFav:translate(intW - 45, 35)
+    -- iconAFav.id_day = id
+    -- iconAFav.posicion =  posicion
+    -- iconAFav:addEventListener( 'tap', saveFav)
+    -- cards[idxC]:insert( iconAFav )
+
+    ID_D = system.getInfo("deviceID")
+    print("Borrando de favoritos")
+    print(id)
+    --RestManager.saveFav(id)
+end
+
+function saveFav(event)
+    id = event.target.id_day
+    posicion = event.target.posicion
+
+    -- local iconAFav = display.newImage("img/iconAFavT.png")
+    -- iconAFav:translate(intW - 45, 35)
+    -- iconAFav.id_day = id
+    -- iconAFav.posicion = posicion
+    -- iconAFav:addEventListener( 'tap', deleteFav)
+    -- posicion:insert( iconAFav )
+
+    ID_D = system.getInfo("deviceID")
+    print("Guardado como favorito")
+    print(ID_D)
+    -- RestManager.saveFav(id)
 end
 
 -------------------------------------
@@ -276,10 +326,22 @@ function getCard()
     local iconADown = display.newImage("img/iconADown.png")
     iconADown:translate(intW - 120, 35)
     cards[idxC]:insert( iconADown )
-    
-    local iconAFav = display.newImage("img/iconAFav.png")
-    iconAFav:translate(intW - 45, 35)
-    cards[idxC]:insert( iconAFav )
+
+    if item.fav then
+        local iconAFav = display.newImage("img/iconAFavT.png")
+        iconAFav:translate(intW - 45, 35)
+        iconAFav.id_day = item.id_day
+        iconAFav.posicion =  cards[idxC]
+        iconAFav:addEventListener( 'tap', deleteFav)
+        cards[idxC]:insert( iconAFav )
+    else
+        local iconAFav = display.newImage("img/iconAFav.png")
+        iconAFav:translate(intW - 45, 35)
+        iconAFav.id_day = item.id_day
+        iconAFav.posicion =  cards[idxC]
+        iconAFav:addEventListener( 'tap', saveFav)
+        cards[idxC]:insert( iconAFav )
+    end
     
     -- Desc Section
     local bgDesc = display.newRect( midW, 70, intW, 170 )
@@ -565,9 +627,9 @@ function detectNetworkConnection( )
 	tools:setLoading( true, groupLoading )
 	
 	if ( isNetworkConnection() ) then
-		--RestManager.getAudios()
-		local getAudios = DBManager.getAudios()
-		returnAudioCard( getAudios )
+		RestManager.getAudios()
+		-- local getAudios = DBManager.getAudios()
+		-- returnAudioCard( getAudios )
 	else
 		local getAudios = DBManager.getAudios()
 		if not getAudios then
@@ -586,7 +648,6 @@ end
 
 function scene:create( event )
 	screen = self.view
-    
     local bgScr = display.newRect( midW, h, intW, intH )
     bgScr.anchorY = 0
     bgScr:setFillColor( unpack(cGrayL) )
