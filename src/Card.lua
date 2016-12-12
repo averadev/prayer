@@ -118,46 +118,32 @@ function cloudIcon(item)
 end
 
 function favIcon(item)
+    local sheet, loading
+    sheet = graphics.newImageSheet(Sprites.liked.source, Sprites.liked.frames)
+    btndislike = display.newSprite(sheet, Sprites.liked.sequences)
+
+    btndislike.x = intW - 45
+    btndislike.y = 58
+    btndislike.anchorY = 1
+    btndislike.id_day = item.id_day
+    btndislike.posicion =  cards[idxC]
+    
     if item.fav then
-        local sheet, loading
-        sheet = graphics.newImageSheet(Sprites.liked.source, Sprites.liked.frames)
-        liked = display.newSprite(sheet, Sprites.liked.sequences)
-
-        liked.x = intW - 45
-        liked.y = 58
-        liked.anchorY = 1
-        liked.id_day = item.id_day
-        liked.posicion =  cards[idxC]
-        liked:addEventListener( 'tap', deleteFav)
-        cards[idxC]:insert(liked)
-        liked:setSequence("like")
-        --liked:like()
+        btndislike:addEventListener( 'tap', deleteFav)
+        cards[idxC]:insert(btndislike)
+        btndislike:setSequence("like")
     else
-        local sheet, loading
-        sheet = graphics.newImageSheet(Sprites.liked.source, Sprites.liked.frames)
-        liked = display.newSprite(sheet, Sprites.liked.sequences)
+        btndislike:setSequence("dislike")
+        btndislike:addEventListener( 'tap', saveFav)
+        cards[idxC]:insert(btndislike)
 
-        liked.x = intW - 45
-        liked.y = 58
-        liked.anchorY = 1
-        liked.id_day = item.id_day
-        liked.posicion =  cards[idxC]
-        liked:addEventListener( 'tap', saveFav)
-        cards[idxC]:insert(liked)
-        liked:setSequence("dislike")
 
     end
 end
 function deleteFav(event)
+    btndislike:setSequence("dislike")
     id = event.target.id_day
     posicion = event.target.posicion
-
-    -- local iconAFav = display.newImage("img/iconAFav.png")
-    -- iconAFav:translate(intW - 45, 35)
-    -- iconAFav.id_day = id
-    -- iconAFav.posicion =  posicion
-    -- iconAFav:addEventListener( 'tap', saveFav)
-    -- cards[idxC]:insert( iconAFav )
 
     ID_D = system.getInfo("deviceID")
     print("Borrando de favoritos")
@@ -166,15 +152,10 @@ function deleteFav(event)
 end
 
 function saveFav(event)
+    btndislike:setSequence("like")
+    --liked:setSequence("liked")
     id = event.target.id_day
     posicion = event.target.posicion
-
-    -- local iconAFav = display.newImage("img/iconAFavT.png")
-    -- iconAFav:translate(intW - 45, 35)
-    -- iconAFav.id_day = id
-    -- iconAFav.posicion = posicion
-    -- iconAFav:addEventListener( 'tap', deleteFav)
-    -- posicion:insert( iconAFav )
 
     ID_D = system.getInfo("deviceID")
     print("Guardado como favorito")
@@ -294,6 +275,7 @@ end
 ------------------------------------
 function playAudio()
     setEventosBotones()
+
     if control[idxC].audio then
         control[idxP].audio:play()
         control[idxP].play.alpha = 0

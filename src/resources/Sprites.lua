@@ -17,7 +17,10 @@ Sprites.loading = {
 
 Sprites.liked = {
   source = "img/sprFav.png",
+  frames = {width=50, height=50, numFrames=2},
   sequences = {
+      { name = "dislike", loopCount = 1, start = 1, count=1},
+      { name = "like", time=1500, start = 2, count=1}
   }
 }
 
