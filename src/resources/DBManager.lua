@@ -137,7 +137,7 @@ local dbManager = {}
 			do return end
 		end
     	ID_D = system.getInfo("deviceID")
-        query = "INSERT INTO config VALUES ('0', '"..ID_D.."', 'http://192.168.1.71/prayer_ws/');"
+        query = "INSERT INTO config VALUES ('0', '"..ID_D.."', 'http://192.168.1.67/prayer_ws/');"
         --query = "INSERT INTO config VALUES ('1015173253001603', '', 'Alberto Vera', 'Cancún, Quintana Roo', 0);"
 		
 		db:exec( query )

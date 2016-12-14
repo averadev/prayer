@@ -71,11 +71,11 @@ function dowloadFile(event)
     params.progress = true
    print('Descargando '..event.target.id_day)
    network.download(
-    "http://docs.coronalabs.com/images/simulator/image-mask-base2.png",
+    "http://192.168.1.67/prayer_ws/assets/audios/Central-ambiente_1480359943.mp3",
     "GET",
     networkListener,
     params,
-    "helloCopy.png",
+    "Central-ambiente_1480359943.mp3",
     system.TemporaryDirectory
     )
 end
@@ -87,11 +87,13 @@ function networkListener( event )
         print( "Progress Phase: began" )
     elseif ( event.phase == "ended" ) then
         print( "Displaying response image file" )
-        myImage = display.newImage( event.response.filename, event.response.baseDirectory, 60, 40 )
-        myImage.alpha = 0
-        transition.to( myImage, { alpha=1.0 } )
-        cards[idxC]:insert(myImage)
-        
+        --myImage = display.newImage( event.response.filename, event.response.baseDirectory, 60, 40 )
+        --myImage.alpha = 0
+        --transition.to( myImage, { alpha=1.0 } )
+        --cards[idxC]:insert(myImage)
+        print(event.response.filename)
+        local laserSound = audio.loadSound( event.response.baseDirectory..event.response.filename )
+        local laserChannel = audio.play( laserSound )
         -- control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
         -- control[idxP].audio:load( "http://192.168.1.71/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
         -- control[idxP].audio:addEventListener( "video", videoListener )
@@ -134,33 +136,39 @@ function favIcon(item)
         btndislike:setSequence("like")
     else
         btndislike:setSequence("dislike")
-        btndislike:addEventListener( 'tap', saveFav)
+        --btndislike:addEventListener( 'tap', saveFav)
         cards[idxC]:insert(btndislike)
-
-
     end
+    btndislike.isActive = item.fav
+    btndislike:addEventListener( 'tap', saveFav)
 end
 function deleteFav(event)
     btndislike:setSequence("dislike")
+    btndislike:removeEventListener("tap", deleteFav)
     id = event.target.id_day
     posicion = event.target.posicion
-
-    ID_D = system.getInfo("deviceID")
     print("Borrando de favoritos")
-    print(id)
     RestManager.deleteFav(id)
 end
 
 function saveFav(event)
-    btndislike:setSequence("like")
-    --liked:setSequence("liked")
-    id = event.target.id_day
-    posicion = event.target.posicion
-
-    ID_D = system.getInfo("deviceID")
-    print("Guardado como favorito")
-    print(ID_D)
-    RestManager.saveFav(id)
+    if event.target.isActive then
+        event.target.isActive = false
+        event.target:setSequence("dislike")
+        btndislike:setSequence("dislike")
+        id = event.target.id_day
+        posicion = event.target.posicion
+        print("Borrando de favoritos")
+        RestManager.deleteFav(id)
+    else
+        event.target.isActive = true
+        event.target:setSequence("like")
+        btndislike:setSequence("like")
+         id = event.target.id_day
+        posicion = event.target.posicion
+        print("Guardado como favorito")
+        RestManager.saveFav(id)
+    end
 end
 
 -------------------------------------
