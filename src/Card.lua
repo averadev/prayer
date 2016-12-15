@@ -55,6 +55,7 @@ function returnAudioCard( items )
             subtitle = item.day_shortdesc,
             file = item.audio,
             fav = liked,
+            downloaded = item.downloaded,
             detail = item.day_longdesc
         }
 	end
@@ -71,11 +72,11 @@ function dowloadFile(event)
     params.progress = true
    print('Descargando '..event.target.id_day)
    network.download(
-    "http://192.168.1.67/prayer_ws/assets/audios/Central-ambiente_1480359943.mp3",
+    "http://www.mfiles.co.uk/mp3-downloads/handel-ombra-mai-fu.mp3",
     "GET",
     networkListener,
     params,
-    "Central-ambiente_1480359943.mp3",
+    "handel-ombra-mai.mp3",
     system.TemporaryDirectory
     )
 end
@@ -86,18 +87,12 @@ function networkListener( event )
     elseif ( event.phase == "began" ) then
         print( "Progress Phase: began" )
     elseif ( event.phase == "ended" ) then
-        print( "Displaying response image file" )
-        --myImage = display.newImage( event.response.filename, event.response.baseDirectory, 60, 40 )
-        --myImage.alpha = 0
-        --transition.to( myImage, { alpha=1.0 } )
-        --cards[idxC]:insert(myImage)
+        print(system.TemporaryDirectory)
         print(event.response.filename)
-        local laserSound = audio.loadSound( event.response.baseDirectory..event.response.filename )
-        local laserChannel = audio.play( laserSound )
-        -- control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
-        -- control[idxP].audio:load( "http://192.168.1.71/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
-        -- control[idxP].audio:addEventListener( "video", videoListener )
-        -- control[idxP].audio:play()
+        control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
+        control[idxP].audio:load(event.response.filename, system.TemporaryDirectory)
+        control[idxP].audio:addEventListener( "video", videoListener )
+        control[idxP].audio:play()
     end
 end
 

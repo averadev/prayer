@@ -87,7 +87,7 @@ local dbManager = {}
 		end
 		for i = 1, #items, 1 do
 		local item = items[i]
-			local query = "INSERT INTO audio VALUES ( '" .. item.id_day .."', '" .. item.day_date .."', '" .. item.day_type .."', '" .. item.day_name .."', '" .. item.day_shortdesc .."', '" .. item.day_longdesc .."', '" .. item.day_status .."', '" .. item.audio .."', '" .. item.weekday .."', '" .. item.day .."', '" .. item.month .."', '" .. item.fav .."' );"
+			local query = "INSERT INTO audio VALUES ( '" .. item.id_day .."', '" .. item.day_date .."', '" .. item.day_type .."', '" .. item.day_name .."', '" .. item.day_shortdesc .."', '" .. item.day_longdesc .."', '" .. item.day_status .."', '" .. item.audio .."', '" .. item.weekday .."', '" .. item.day .."', '" .. item.month .."', '" .. item.fav .."', '" .. item.downloaded .."' );"
 			db:exec( query )
 		end
         
@@ -127,7 +127,7 @@ local dbManager = {}
 		local query = "CREATE TABLE IF NOT EXISTS config (id INTEGER PRIMARY KEY, idDevice TEXT, url TEXT);"
 		db:exec( query )
 		
-		local query = "CREATE TABLE IF NOT EXISTS audio (id_day INTEGER PRIMARY KEY, day_date TEXT, day_type INTEGER, day_name TEXT, day_shortdesc TEXT, day_longdesc TEXT, day_status INTEGER, audio TEXT, weekday text, day text, month text, fav  INTEGER);"
+		local query = "CREATE TABLE IF NOT EXISTS audio (id_day INTEGER PRIMARY KEY, day_date TEXT, day_type INTEGER, day_name TEXT, day_shortdesc TEXT, day_longdesc TEXT, day_status INTEGER, audio TEXT, weekday text, day text, month text, fav  INTEGER, downloaded INTEGER);"
 		db:exec( query )
     
         --updateTable('config', 'idCard', 'TEXT')
@@ -137,7 +137,7 @@ local dbManager = {}
 			do return end
 		end
     	ID_D = system.getInfo("deviceID")
-        query = "INSERT INTO config VALUES ('0', '"..ID_D.."', 'http://192.168.1.67/prayer_ws/');"
+        query = "INSERT INTO config VALUES ('0', '"..ID_D.."', 'http://192.168.1.79/prayer_ws/');"
         --query = "INSERT INTO config VALUES ('1015173253001603', '', 'Alberto Vera', 'Cancún, Quintana Roo', 0);"
 		
 		db:exec( query )
