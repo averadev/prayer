@@ -44,7 +44,9 @@ function returnAudioCard( items )
         if (item.fav == 1) then
             liked = true
         end
-
+        if (item.downloaded == 1) then
+            downloaded = true
+        end
 		lstDays[i] = {
             id_day = item.id_day,
             day = item.weekday,
@@ -55,7 +57,7 @@ function returnAudioCard( items )
             subtitle = item.day_shortdesc,
             file = item.audio,
             fav = liked,
-            downloaded = item.downloaded,
+            downloaded = downloaded,
             detail = item.day_longdesc
         }
 	end
