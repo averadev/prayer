@@ -99,22 +99,62 @@ function networkListener( event )
 end
 
 function cloudIcon(item)
-    if item.fav then
-        local iconADown = display.newImage("img/iconADownT.png")
-        iconADown:translate(intW - 120, 35)
-        iconADown.id_day = item.id_day
-        iconADown.posicion =  cards[idxC]
-        iconADown:addEventListener( 'tap', deleteFile)
-        cards[idxC]:insert( iconADown )
+    -- if item.fav then
+    --     local iconADown = display.newImage("img/iconADownT.png")
+    --     iconADown:translate(intW - 120, 35)
+    --     iconADown.id_day = item.id_day
+    --     iconADown.posicion =  cards[idxC]
+    --     iconADown:addEventListener( 'tap', deleteFile)
+    --     cards[idxC]:insert( iconADown )
+    -- else
+    --     local iconADown = display.newImage("img/iconADown.png")
+    --     iconADown:translate(intW - 120, 35)
+    --     iconADown.id_day = item.id_day
+    --     iconADown.posicion =  cards[idxC]
+    --     iconADown:addEventListener( 'tap', dowloadFile)
+    --     cards[idxC]:insert( iconADown )
+    -- end
+    local sheet, loading
+    sheet = graphics.newImageSheet(Sprites.downloaded.source, Sprites.downloaded.frames)
+    btndowload = display.newSprite(sheet, Sprites.downloaded.sequences)
+
+    btndowload.x = intW - 120
+    btndowload.y = 58
+    btndowload.anchorY = 1
+    btndowload.id_day = item.id_day
+    btndowload.posicion =  cards[idxC]
+    
+    if item.downloaded then
+        btndowload:addEventListener( 'tap', deleteFav)
+        cards[idxC]:insert(btndowload)
+        btndowload:setSequence("downloaded")
     else
-        local iconADown = display.newImage("img/iconADown.png")
-        iconADown:translate(intW - 120, 35)
-        iconADown.id_day = item.id_day
-        iconADown.posicion =  cards[idxC]
-        iconADown:addEventListener( 'tap', dowloadFile)
-        cards[idxC]:insert( iconADown )
+        btndowload:setSequence("cloud")
+        cards[idxC]:insert(btndowload)
+    end
+    btndowload.isActive = item.downloaded
+    btndowload:addEventListener( 'tap', saveDowloaded)
+end
+function saveDowloaded(event)
+    if event.target.isActive then
+        event.target.isActive = false
+        event.target:setSequence("cloud")
+        btndislike:setSequence("cloud")
+        id = event.target.id_day
+        posicion = event.target.posicion
+        print("Borrando de memoria")
+        --RestManager.deleteFav(id)
+    else
+        event.target.isActive = true
+        event.target:setSequence("downloaded")
+        btndislike:setSequence("downloaded")
+        id = event.target.id_day
+        posicion = event.target.posicion
+        print("Guardado en memoria")
+        --RestManager.saveFav(id)
     end
 end
+
 
 function favIcon(item)
     local sheet, loading
@@ -133,19 +173,10 @@ function favIcon(item)
         btndislike:setSequence("like")
     else
         btndislike:setSequence("dislike")
-        --btndislike:addEventListener( 'tap', saveFav)
         cards[idxC]:insert(btndislike)
     end
     btndislike.isActive = item.fav
     btndislike:addEventListener( 'tap', saveFav)
-end
-function deleteFav(event)
-    btndislike:setSequence("dislike")
-    btndislike:removeEventListener("tap", deleteFav)
-    id = event.target.id_day
-    posicion = event.target.posicion
-    print("Borrando de favoritos")
-    RestManager.deleteFav(id)
 end
 
 function saveFav(event)
@@ -167,7 +198,14 @@ function saveFav(event)
         RestManager.saveFav(id)
     end
 end
-
+function deleteFav(event)
+    btndislike:setSequence("dislike")
+    btndislike:removeEventListener("tap", deleteFav)
+    id = event.target.id_day
+    posicion = event.target.posicion
+    print("Borrando de favoritos")
+    RestManager.deleteFav(id)
+end
 -------------------------------------
 -- Mueve la navegacion
 ------------------------------------

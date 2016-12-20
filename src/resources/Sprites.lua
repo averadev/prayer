@@ -24,5 +24,13 @@ Sprites.liked = {
   }
 }
 
+Sprites.downloaded = {
+  source = "img/sprDown.png",
+  frames = {width=50, height=50, numFrames=2},
+  sequences = {
+      { name = "cloud", loopCount = 1, start = 1, count=1},
+      { name = "downloaded", time=1500, start = 2, count=1}
+  }
+}
 
 return Sprites
