@@ -138,10 +138,10 @@ end
 function saveDowloaded(event)
     if event.target.isActive then
         event.target.isActive = false
-        event.target:setSequence("cloud")
-        btndislike:setSequence("cloud")
-        id = event.target.id_day
-        posicion = event.target.posicion
+        --event.target:setSequence("cloud")
+        --btndislike:setSequence("cloud")
+        --id = event.target.id_day
+        --posicion = event.target.posicion
         print("Borrando de memoria")
         --RestManager.deleteFav(id)
     else
@@ -151,7 +151,7 @@ function saveDowloaded(event)
         id = event.target.id_day
         posicion = event.target.posicion
         print("Guardado en memoria")
-        --RestManager.saveFav(id)
+        RestManager.saveDowloaded(id)
     end
 end
 

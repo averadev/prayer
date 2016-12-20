@@ -205,6 +205,41 @@ local RestManager = {}
         -- Do request
         network.request( url, "GET", callback )
     end     
+
+    RestManager.saveDowloaded = function(id)
     
+        reloadConfig()
+    
+        site = dbConfig.url
+        local url = site.."api/saveDowloaded"
+        url = url.."/id_device/" .. urlencode(dbConfig.idDevice)
+        url = url.."/id_day/" .. id
+        print(url)
+        
+        local function callback(event)
+            if ( event.isError ) then
+                print("Error aa")
+                --returnLocationProfile( false, event.error)
+            else
+                local data = json.decode(event.response)
+                if data then
+                    if data.success then
+                        DBManager.updateAudios(data.items)
+                        --returnAudioCard(data.items)
+                        --returnLocationProfile( true, data.message)
+                    else
+                        print("Error a")
+                        --returnLocationProfile( false, language.RMErrorSavingProfile )
+                    end
+                else
+                    print("Error b")
+                    --returnLocationProfile( false, language.RMErrorSavingProfile )
+                end
+            end
+            return true
+        end
+        -- Do request
+        network.request( url, "GET", callback )
+    end     
 	
 return RestManager
