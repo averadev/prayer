@@ -13,7 +13,7 @@ local RestManager = {}
     local DBManager = require('src.resources.DBManager')
     local dbConfig = DBManager.getSettings()
 
-    local site = "http://localhost/tuki_ws/"
+    local site = "http://geekbucket.com.mx/prayer_ws/"
     --local site = "http://mytuki.com/api/"
 	
 	--------------------------------------------

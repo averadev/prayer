@@ -136,10 +136,9 @@ local dbManager = {}
             closeConnection( )
 			do return end
 		end
+
     	ID_D = system.getInfo("deviceID")
-        query = "INSERT INTO config VALUES ('0', '"..ID_D.."', 'http://192.168.1.79/prayer_ws/');"
-        --query = "INSERT INTO config VALUES ('1015173253001603', '', 'Alberto Vera', 'Cancún, Quintana Roo', 0);"
-		
+        query = "INSERT INTO config VALUES ('0', '"..ID_D.."', 'http://geekbucket.com.mx/prayer_ws/');"
 		db:exec( query )
     
 		closeConnection( )

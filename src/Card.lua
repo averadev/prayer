@@ -377,7 +377,7 @@ function playAudio()
         
         -- Load a remote audio
         control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
-        control[idxP].audio:load( "http://192.168.1.71/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
+        control[idxP].audio:load( "http://geekbucket.com.mx/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
         control[idxP].audio:addEventListener( "video", videoListener )
         control[idxP].audio:play()
     end
