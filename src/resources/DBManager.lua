@@ -78,7 +78,24 @@ local dbManager = {}
 		end
 		
 	end
-	
+
+	dbManager.getAudiosDWL = function()
+		local result = {}
+		openConnection( )
+		local con = 1
+		for row in db:nrows("SELECT * FROM audio WHERE downloaded = 1;") do
+			result[con] = row
+			con = con + 1
+		end
+		closeConnection( )
+		if #result > 0 then
+			return result
+		else
+			return false
+		end
+		
+	end	
+
 	dbManager.updateAudios = function( items )
 		openConnection( )
 		if ( #items > 0 ) then

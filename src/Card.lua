@@ -40,13 +40,16 @@ function returnAudioCard( items )
 
 	for i = 1, #items, 1 do
 		local item = items[i]
+        print(item.id_day)
         local liked = false
+        local descargado = false
         if (item.fav == 1) then
             liked = true
         end
         if (item.downloaded == 1) then
-            downloaded = true
+            descargado = true
         end
+        
 		lstDays[i] = {
             id_day = item.id_day,
             day = item.weekday,
@@ -57,7 +60,7 @@ function returnAudioCard( items )
             subtitle = item.day_shortdesc,
             file = item.audio,
             fav = liked,
-            downloaded = downloaded,
+            downloaded = descargado,
             detail = item.day_longdesc
         }
 	end
@@ -70,15 +73,16 @@ function deleteFile(event)
    print('Eliminando '..event.target.id_day)
 end
 function dowloadFile(event)
+    print(event.target.file)
     local params = {}
     params.progress = true
    print('Descargando '..event.target.id_day)
    network.download(
-    "http://www.mfiles.co.uk/mp3-downloads/handel-ombra-mai-fu.mp3",
+    "http://geekbucket.com.mx/prayer_ws/assets/audios/"..event.target.file,
     "GET",
     networkListener,
     params,
-    "handel-ombra-mai.mp3",
+    event.target.file,
     system.TemporaryDirectory
     )
 end
@@ -91,29 +95,15 @@ function networkListener( event )
     elseif ( event.phase == "ended" ) then
         print(system.TemporaryDirectory)
         print(event.response.filename)
-        control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
-        control[idxP].audio:load(event.response.filename, system.TemporaryDirectory)
-        control[idxP].audio:addEventListener( "video", videoListener )
-        control[idxP].audio:play()
+        -- control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
+        -- control[idxP].audio:load(event.response.filename, system.TemporaryDirectory)
+        -- control[idxP].audio:addEventListener( "video", videoListener )
+        -- control[idxP].audio:play()
     end
 end
 
 function cloudIcon(item)
-    -- if item.fav then
-    --     local iconADown = display.newImage("img/iconADownT.png")
-    --     iconADown:translate(intW - 120, 35)
-    --     iconADown.id_day = item.id_day
-    --     iconADown.posicion =  cards[idxC]
-    --     iconADown:addEventListener( 'tap', deleteFile)
-    --     cards[idxC]:insert( iconADown )
-    -- else
-    --     local iconADown = display.newImage("img/iconADown.png")
-    --     iconADown:translate(intW - 120, 35)
-    --     iconADown.id_day = item.id_day
-    --     iconADown.posicion =  cards[idxC]
-    --     iconADown:addEventListener( 'tap', dowloadFile)
-    --     cards[idxC]:insert( iconADown )
-    -- end
+    print(item.downloaded)
     local sheet, loading
     sheet = graphics.newImageSheet(Sprites.downloaded.source, Sprites.downloaded.frames)
     btndowload = display.newSprite(sheet, Sprites.downloaded.sequences)
@@ -133,17 +123,13 @@ function cloudIcon(item)
         cards[idxC]:insert(btndowload)
     end
     btndowload.isActive = item.downloaded
+    btndowload.file = item.file
     btndowload:addEventListener( 'tap', saveDowloaded)
 end
 function saveDowloaded(event)
     if event.target.isActive then
         event.target.isActive = false
-        --event.target:setSequence("cloud")
-        --btndislike:setSequence("cloud")
-        --id = event.target.id_day
-        --posicion = event.target.posicion
         print("Borrando de memoria")
-        --RestManager.deleteFav(id)
     else
         event.target.isActive = true
         event.target:setSequence("downloaded")
@@ -152,6 +138,7 @@ function saveDowloaded(event)
         posicion = event.target.posicion
         print("Guardado en memoria")
         RestManager.saveDowloaded(id)
+        dowloadFile(event)
     end
 end
 
@@ -192,7 +179,7 @@ function saveFav(event)
         event.target.isActive = true
         event.target:setSequence("like")
         btndislike:setSequence("like")
-         id = event.target.id_day
+        id = event.target.id_day
         posicion = event.target.posicion
         print("Guardado como favorito")
         RestManager.saveFav(id)
@@ -316,7 +303,7 @@ end
 -------------------------------------
 -- Obtiene tarjeta
 ------------------------------------
-function playAudio()
+function playAudio(event)
     setEventosBotones()
 
     if control[idxC].audio then
@@ -375,11 +362,28 @@ function playAudio()
             end
         end
         
-        -- Load a remote audio
-        control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
-        control[idxP].audio:load( "http://geekbucket.com.mx/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
-        control[idxP].audio:addEventListener( "video", videoListener )
-        control[idxP].audio:play()
+
+        if event.target.downloaded then
+            local path = system.pathForFile( event.target.file, system.TemporaryDirectory )
+            local fhd = io.open( path )
+            if fhd then
+                fhd:close()
+                local  file = event.target.file
+                print(file)
+                print(system.TemporaryDirectory)
+                -- media.playSound( path )
+                control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
+                control[idxP].audio:load(path, system.TemporaryDirectory )
+                control[idxP].audio:addEventListener( "video", videoListener )
+                control[idxP].audio:play()
+            end
+        else
+            -- Load a remote audio
+            control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
+            control[idxP].audio:load( "http://geekbucket.com.mx/prayer_ws/assets/audios/"..lstDays[idxC].file, media.RemoteSource )
+            control[idxP].audio:addEventListener( "video", videoListener )
+            control[idxP].audio:play()
+        end
     end
     return true
 end
@@ -439,8 +443,7 @@ function getCard()
     bgAct.anchorY = 0
     bgAct:setFillColor( unpack(cPurpleH) )
     cards[idxC]:insert(bgAct)
-    
-    
+
     cloudIcon(item)
     favIcon(item)
 
@@ -496,6 +499,8 @@ function getCard()
     
     control[idxC].play = display.newImage("img/iconHPlay.png")
     control[idxC].play:translate(midW, posY + 50)
+    control[idxC].play.downloaded = item.downloaded
+    control[idxC].play.file = item.file
     control[idxC].play:addEventListener( 'tap', playAudio)
     cards[idxC]:insert( control[idxC].play )
     
@@ -733,7 +738,7 @@ function detectNetworkConnection( )
 		-- local getAudios = DBManager.getAudios()
 		-- returnAudioCard( getAudios )
 	else
-		local getAudios = DBManager.getAudios()
+		local getAudios = DBManager.getAudiosDWL()
 		if not getAudios then
 			messageNoConnection()
 		elseif #getAudios > 0 then
