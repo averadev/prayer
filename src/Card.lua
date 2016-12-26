@@ -73,33 +73,30 @@ function deleteFile(event)
    print('Eliminando '..event.target.id_day)
 end
 function dowloadFile(event)
-    print(event.target.file)
     local params = {}
     params.progress = true
-   print('Descargando '..event.target.id_day)
-   network.download(
-    "http://geekbucket.com.mx/prayer_ws/assets/audios/"..event.target.file,
-    "GET",
-    networkListener,
-    params,
-    event.target.file,
-    system.TemporaryDirectory
+
+    network.download(
+        "http://geekbucket.com.mx/prayer_ws/assets/audios/"..event.target.file,
+        "GET",
+        networkListener,
+        params,
+        event.target.file,
+        system.TemporaryDirectory
     )
 end
 
 function networkListener( event )
+    local dw = false
     if ( event.isError ) then
         print( "Network error - download failed: ", event.response )
     elseif ( event.phase == "began" ) then
         print( "Progress Phase: began" )
     elseif ( event.phase == "ended" ) then
-        print(system.TemporaryDirectory)
-        print(event.response.filename)
-        -- control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
-        -- control[idxP].audio:load(event.response.filename, system.TemporaryDirectory)
-        -- control[idxP].audio:addEventListener( "video", videoListener )
-        -- control[idxP].audio:play()
+        dw = true
+        btndowload:setSequence("downloaded")
     end
+    return dw
 end
 
 function cloudIcon(item)
@@ -129,16 +126,12 @@ end
 function saveDowloaded(event)
     if event.target.isActive then
         event.target.isActive = false
-        print("Borrando de memoria")
     else
         event.target.isActive = true
-        event.target:setSequence("downloaded")
-        btndislike:setSequence("downloaded")
         id = event.target.id_day
         posicion = event.target.posicion
-        print("Guardado en memoria")
-        RestManager.saveDowloaded(id)
         dowloadFile(event)
+        RestManager.saveDowloaded(id)
     end
 end
 
@@ -369,9 +362,6 @@ function playAudio(event)
             if fhd then
                 fhd:close()
                 local  file = event.target.file
-                print(file)
-                print(system.TemporaryDirectory)
-                -- media.playSound( path )
                 control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
                 control[idxP].audio:load(path, system.TemporaryDirectory )
                 control[idxP].audio:addEventListener( "video", videoListener )
