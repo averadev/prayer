@@ -150,7 +150,7 @@ local RestManager = {}
                 if data then
                     if data.success then
                         DBManager.updateAudios(data.items)
-                        returnAudioCard(data.items)
+                        --returnAudioCard(data.items)
                         --returnLocationProfile( true, data.message)
                     else
                         print("Error a")
@@ -189,7 +189,7 @@ local RestManager = {}
                 if data then
                     if data.success then
                         DBManager.updateAudios(data.items)
-                        returnAudioCard(data.items)
+                        --returnAudioCard(data.items)
                         --returnLocationProfile( true, data.message)
                     else
                         print("Error a")

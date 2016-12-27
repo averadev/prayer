@@ -30,11 +30,15 @@ function favoriteDays( items )
 
     for i = 1, #items, 1 do
         local item = items[i]
+        print(item.id_day)
         local liked = false
+         local descargado = false
         if (item.fav == 1) then
             liked = true
         end
-        print(item.day)
+        if (item.downloaded == 1) then
+            descargado = true
+        end
         favDays[i] = {
             id_day = item.id_day,
             day = item.weekday,
@@ -45,6 +49,7 @@ function favoriteDays( items )
             subtitle = item.day_shortdesc,
             file = item.audio,
             fav = liked,
+            downloaded = descargado,
             detail = item.day_longdesc
         }
     end
@@ -128,7 +133,8 @@ function getDates(items)
         isLeft = not(isLeft)
     end
 end
-function messageNoFav()
+function messageNoFav(v)
+    print("aqui en no hay")
     --bgSelected:removeSelf();
     tools:setLoading( false, groupLoading )
     
@@ -138,20 +144,31 @@ function messageNoFav()
     end
     
     groupLoading.y =  70 + h
-    
+
     local lblNoConnection = display.newText({
         text = "No hay favoritos",
         y = 110,
         x = midW, width = intW-100,
         font = fMonRegular, 
         fontSize = 20, align = "center"
-    })
+        })
     lblNoConnection:setFillColor( unpack(cBlack) )
     groupLoading:insert(lblNoConnection)
-    
-    
+
 end
 
+
+function updateFav()
+    local favDays = DBManager.getAudiosFav()
+    local R = false
+    if not favDays then
+        messageNoFav(true)
+    elseif #favDays > 0 then
+        R = true
+        favoriteDays(favDays)
+    end
+    return R
+end
 ---------------------------------------------------------------------------------
 -- DEFAULT METHODS
 ---------------------------------------------------------------------------------
@@ -179,45 +196,13 @@ function scene:create( event )
     })
     screen:insert(scCalendar)
     
-    -- bgSelected = display.newRoundedRect( 130, 130, 210, 240, 5 )
-    -- bgSelected.alpha = .8
-    -- bgSelected:setFillColor( unpack(cBlack) )
-    -- scCalendar:insert(bgSelected)
-    
-    local favDays = DBManager.getAudiosFav()
-    if not favDays then
-        messageNoFav()
-    elseif #favDays > 0 then
-        favoriteDays(favDays)
-        scCalendar:setScrollHeight(((250 * #favDays) / 2) + 10)
-    end
-    -- favoriteDays(getAudios)
-    
-    
-    -- Set new scroll position
-    
 end	
 
 -- Called immediately after scene has moved onscreen:
 function scene:show( event )
     if event.phase == "will" then
+        local f = updateFav()
         local res = idxC % 2
-        local posY = (idxC + res) / 2
-        posY = (250 * posY) - 120
-        
-        -- if res == 1 then
-        --     bgSelected.x = 130
-        -- else
-        --     bgSelected.x = 355
-        -- end
-        -- bgSelected.y = posY
-        
-        local toY = (posY * -1) + 130
-        scCalendar:scrollToPosition({
-            y = toY,
-            time = 0
-        })
-        
         if idxP > 0 then
             tools:getIcon()            
         end

@@ -29,6 +29,7 @@ function dayPray(event)
     composer.gotoScene("src.Card", { time = 400, effect = "slideLeft", params = { item = 8 } } )
 end
 function favoriteDays(event)
+    composer.removeScene("src.FavDays")
     composer.gotoScene("src.FavDays", { time = 400, effect = "slideLeft", params = { item = nil } } )
 end
 

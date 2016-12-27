@@ -40,7 +40,6 @@ function returnAudioCard( items )
 
 	for i = 1, #items, 1 do
 		local item = items[i]
-        print(item.id_day)
         local liked = false
         local descargado = false
         if (item.fav == 1) then
@@ -194,9 +193,14 @@ function moveNav()
     imgPrev.alpha = 1
     bgNext.alpha = 1
     imgNext.alpha = 1
+    print(idxC)
     if idxC == 1 then
         bgPrev.alpha = 0
         imgPrev.alpha = 0
+        if #lstDays == 1 then
+            bgNext.alpha = 0
+            imgNext.alpha = 0
+        end
     elseif idxC == #lstDays then
         bgNext.alpha = 0
         imgNext.alpha = 0
