@@ -99,7 +99,7 @@ function networkListener( event )
 end
 
 function cloudIcon(item)
-    print(item.downloaded)
+    
     local sheet, loading
     sheet = graphics.newImageSheet(Sprites.downloaded.source, Sprites.downloaded.frames)
     btndowload = display.newSprite(sheet, Sprites.downloaded.sequences)
@@ -165,7 +165,6 @@ function saveFav(event)
         btndislike:setSequence("dislike")
         id = event.target.id_day
         posicion = event.target.posicion
-        print("Borrando de favoritos")
         RestManager.deleteFav(id)
     else
         event.target.isActive = true
@@ -173,7 +172,6 @@ function saveFav(event)
         btndislike:setSequence("like")
         id = event.target.id_day
         posicion = event.target.posicion
-        print("Guardado como favorito")
         RestManager.saveFav(id)
     end
 end
@@ -182,7 +180,6 @@ function deleteFav(event)
     btndislike:removeEventListener("tap", deleteFav)
     id = event.target.id_day
     posicion = event.target.posicion
-    print("Borrando de favoritos")
     RestManager.deleteFav(id)
 end
 -------------------------------------
@@ -193,7 +190,6 @@ function moveNav()
     imgPrev.alpha = 1
     bgNext.alpha = 1
     imgNext.alpha = 1
-    print(idxC)
     if idxC == 1 then
         bgPrev.alpha = 0
         imgPrev.alpha = 0
@@ -345,7 +341,6 @@ function playAudio(event)
          -- Listener on Ready
         local function videoListener( event )
             if event.phase == 'ready' then
-                -- Change design
                 control[idxP].pause.alpha = 1
                 control[idxP].loading.alpha = 0
                 control[idxP].loading:setSequence("stop")
@@ -649,24 +644,6 @@ function createNavigationPlay()
 	end
 	cards[idxC].x = 240
 	
-	--[[local tmpDay = -7
-	local DAY = 86400
-	local now = os.time()
-	local curTime = 0
-	
-	for i = 1, #lstDays, 1 do 
-		curTime = now + (DAY * tmpDay)
-		lstDays[i].day = lstDay[os.date( '%w', curTime ) + 1]
-		lstDays[i].noDate = os.date( '%d', curTime )
-		lstDays[i].month = lstMonth[tonumber(os.date( '%m', curTime ))]
-		if tmpDay == 0 then lstDays[i].day = 'Hoy' end 
-		tmpDay = tmpDay + 1
-		print(" ")
-		print(os.date( '%d', curTime ))
-		print(" ")
-	end]]
-	
-	
 end
 
 --------------------------------------------
@@ -729,8 +706,6 @@ function detectNetworkConnection( )
 	
 	if ( isNetworkConnection() ) then
 		RestManager.getAudios()
-		-- local getAudios = DBManager.getAudios()
-		-- returnAudioCard( getAudios )
 	else
 		local getAudios = DBManager.getAudiosDWL()
 		if not getAudios then
