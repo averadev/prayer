@@ -25,12 +25,25 @@ local scene = composer.newScene()
 -- Tmp
 -- @param event objeto evento
 ------------------------------------
+function gotoFacebook()
+    system.openURL( "https://www.facebook.com/" )
+end
+function gotoTwitter()
+    system.openURL( "https://www.twitter.com/" )
+end
+function gotoWeb()
+    system.openURL( "http://geekbucket.com.mx/en/" )
+end
+
 function dayPray(event)
     composer.gotoScene("src.Card", { time = 400, effect = "slideLeft", params = { item = 8 } } )
 end
 function favoriteDays(event)
     composer.removeScene("src.FavDays")
     composer.gotoScene("src.FavDays", { time = 400, effect = "slideLeft", params = { item = nil } } )
+end
+function donations(event)
+    system.openURL( "https://www.paypal.com/" )
 end
 
 function setTapListener(posicion, elemento)
@@ -42,6 +55,9 @@ function setTapListener(posicion, elemento)
     end
     if posicion == 3 then
         elemento:addEventListener( 'tap', dayPray)
+    end
+    if posicion == 4 then
+        elemento:addEventListener( 'tap', donations)
     end
 end
 
@@ -136,14 +152,17 @@ function scene:create( event )
     
     local iconWeb = display.newImage("img/iconSWeb.png")
     iconWeb:translate(midW - 80, intH - 35)
+    iconWeb:addEventListener( 'tap', gotoWeb)
     screen:insert( iconWeb )
     
     local iconSFB = display.newImage("img/iconSFB.png")
     iconSFB:translate(midW, intH - 35)
+    iconSFB:addEventListener( 'tap', gotoFacebook)
     screen:insert( iconSFB )
     
     local iconSTW = display.newImage("img/iconSTW.png")
     iconSTW:translate(midW + 80, intH - 35)
+    iconSTW:addEventListener( 'tap', gotoTwitter)
     screen:insert( iconSTW )
     
 end	
