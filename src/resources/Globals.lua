@@ -17,7 +17,6 @@ cGrayL = { .95 }
 cWhite = { 1 }
 cPurple = { .28, .21, .3 }
 cPurpleH = { .21, .16, .23 }
-
 -- Fonts
 fMonBold = 'Montserrat'
 fMonRegular = 'Montserrat'

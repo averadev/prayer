@@ -28,7 +28,6 @@ for i = 1, #lstDays, 1 do
     lstDays[i].month = lstMonth[tonumber(os.date( '%m', curTime ))]
     if tmpDay == 0 then lstDays[i].day = 'Hoy' end 
     tmpDay = tmpDay + 1
-	print(curTime)
 end
 
 --composer.gotoScene("src.Calendar")

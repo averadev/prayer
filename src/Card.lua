@@ -71,6 +71,9 @@ end
 function deleteFile(event)
    print('Eliminando '..event.target.id_day)
 end
+
+
+--- funcion para descargar el archivo
 function dowloadFile(event)
     local params = {}
     params.progress = true
@@ -249,9 +252,7 @@ function nextCard()
     end
 end
 
--------------------------------------
--- Obtiene tarjeta
-------------------------------------
+
 function pauseAudio()
     timer.cancel(tmrPlaying)
     control[idxP].audio:pause()
@@ -259,9 +260,7 @@ function pauseAudio()
     control[idxP].pause.alpha = 0
 end
 
--------------------------------------
--- Obtiene tarjeta
-------------------------------------
+
 function prevAudio()
     if (cntTime - 5) < 0 then
         cntTime = 0
@@ -293,9 +292,7 @@ function setEventosBotones()
     control[idxC].prev:addEventListener( 'tap', prevAudio)
     control[idxC].next:addEventListener( 'tap', nextAudio)
 end
--------------------------------------
--- Obtiene tarjeta
-------------------------------------
+
 function playAudio(event)
     setEventosBotones()
 
@@ -736,9 +733,7 @@ function scene:create( event )
 	groupLoading = display.newGroup()
 	groupLoading.y = midH + ( 70 + h )
 	screen:insert( groupLoading )
-	
-	
-	
+
 	detectNetworkConnection()
 	
 	--createNavigationPlay()

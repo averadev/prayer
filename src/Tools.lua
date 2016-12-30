@@ -62,10 +62,6 @@ function Tools:new()
         
     end
     
-    -------------------------------------
-    -- Creamos el top bar
-    -- @param isWelcome boolean pantalla principal
-    ------------------------------------ 
     function self:getIcon()
         iconPlaying.alpha = 1
     end
@@ -108,9 +104,7 @@ function Tools:new()
             grpLoading = display.newGroup()
             parent:insert(grpLoading)
             
-			-- local bg = display.newRect( (display.contentWidth / 2), (parent.height / 2), display.contentWidth, parent.height )
-			local bg = display.newRect( midW, (parent.height / 2), intW, intH )
-			--bg:setFillColor( .5 )
+            local bg = display.newRect( midW, (parent.height / 2), intW, intH )
             bg:setFillColor( .95 )
             bg.alpha = .3
             grpLoading:insert(bg)

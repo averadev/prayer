@@ -21,10 +21,7 @@ local scene = composer.newScene()
 ---------------------------------------------------------------------------------
 -- FUNCIONES
 ---------------------------------------------------------------------------------
--------------------------------------
--- Tmp
--- @param event objeto evento
-------------------------------------
+
 function gotoFacebook()
     system.openURL( "https://www.facebook.com/" )
 end
@@ -45,7 +42,9 @@ end
 function donations(event)
     system.openURL( "https://www.paypal.com/" )
 end
-
+function configApp(event)
+    composer.gotoScene("src.Configuracion", { time = 400, effect = "slideLeft", params = { item = 8 } } )
+end
 function setTapListener(posicion, elemento)
     if posicion == 1 then
         elemento:addEventListener( 'tap', dayPray)
@@ -58,6 +57,9 @@ function setTapListener(posicion, elemento)
     end
     if posicion == 4 then
         elemento:addEventListener( 'tap', donations)
+    end
+    if posicion == 5 then
+        elemento:addEventListener( 'tap', configApp)
     end
 end
 
@@ -105,7 +107,8 @@ function scene:create( event )
         {'iconLiked','DayPray','Favoritos'},
         {'iconHow','HowPray','¿Comó Orar?'},
         {'iconDonation','Donation','Donaciones'},
-        {'iconConfig','Config','Configuración'}}
+        {'iconConfig','Config','Configuración'}
+    }
     
     for i = 1, #menuA, 1 do 
         local bgM1 = display.newRect( midW, menuY, 480, 80 )

@@ -134,8 +134,6 @@ function getDates(items)
     end
 end
 function messageNoFav(v)
-    print("aqui en no hay")
-    --bgSelected:removeSelf();
     tools:setLoading( false, groupLoading )
     
     if not groupLoading then
