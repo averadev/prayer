@@ -30,13 +30,5 @@ for i = 1, #lstDays, 1 do
     tmpDay = tmpDay + 1
 end
 
---composer.gotoScene("src.Calendar")
 composer.gotoScene("src.Card" )
---composer.gotoScene("src.Card", {params = { item = 8 }} )
 
---[[
-local systemFonts = native.getFontNames()
-for i, fontName in ipairs( systemFonts ) do
-     print( "Font Name = " .. tostring( fontName ) )
-end
-]]
