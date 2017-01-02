@@ -48,7 +48,7 @@ function returnAudioCard( items )
         if (item.downloaded == 1) then
             descargado = true
         end
-        
+        print(item.audio)
 		lstDays[i] = {
             id_day = item.id_day,
             day = item.weekday,
@@ -655,6 +655,16 @@ function isNetworkConnection()
 	return true
 end
 
+function menssageNoLocalAudios( ... )
+    local getAudios = DBManager.getAudiosDWL()
+    if not getAudios then
+     messageNoConnection()
+    elseif #getAudios > 0 then
+     returnAudioCard( getAudios )
+    end
+    --composer.gotoScene("src.Card" )
+end
+
 --------------------------------------------
 -- Muestra un mensaje cuando no se encontro conexion a internet
 --------------------------------------------
@@ -676,7 +686,7 @@ function messageNoConnection()
         font = fMonRegular, 
         fontSize = 20, align = "center"
     })
-    lblNoConnection:setFillColor( unpack(cBlack) )
+    lblNoConnection:setFillColor(unpack(cBlack))
     groupLoading:insert(lblNoConnection)
 	
 	local btnNoConnection = display.newRoundedRect( midW, 250, intW - 50, 70, 5 )
@@ -694,6 +704,22 @@ function messageNoConnection()
     })
     lblRefresh:setFillColor( unpack(cWhite) )
     groupLoading:insert(lblRefresh)
+
+
+    local btnNoConnection2 = display.newRoundedRect( midW, 350, intW - 50, 70, 5 )
+    btnNoConnection2:setFillColor( unpack(cPurple) )
+    btnNoConnection2:addEventListener('tap', menssageNoLocalAudios)
+    groupLoading:insert(btnNoConnection2)
+
+        local lblRefresh = display.newText({
+        text = "CARGAR GUARDADOS",
+        y = 350,
+        x = midW, width = intW-100,
+        font = fMonRegular, 
+        fontSize = 20, align = "center"
+    })
+    lblRefresh:setFillColor( unpack(cWhite) )
+    groupLoading:insert(lblRefresh)
 	
 end
 
@@ -703,13 +729,15 @@ function detectNetworkConnection( )
 	
 	if ( isNetworkConnection() ) then
 		RestManager.getAudios()
+        --messageNoConnection()
 	else
-		local getAudios = DBManager.getAudiosDWL()
-		if not getAudios then
-			messageNoConnection()
-		elseif #getAudios > 0 then
-			returnAudioCard( getAudios )
-		end
+        messageNoConnection()
+		-- local getAudios = DBManager.getAudiosDWL()
+		-- if not getAudios then
+		-- 	messageNoConnection()
+		-- elseif #getAudios > 0 then
+		-- 	returnAudioCard( getAudios )
+		-- end
 	end
 	
 end
