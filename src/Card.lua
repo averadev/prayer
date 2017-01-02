@@ -45,10 +45,10 @@ function returnAudioCard( items )
         if (item.fav == 1) then
             liked = true
         end
-        if (item.downloaded == 1) then
+        if (verificarArchivoLocal(item.audio)) then
             descargado = true
         end
-        print(item.audio)
+        --print(item.audio)
 		lstDays[i] = {
             id_day = item.id_day,
             day = item.weekday,
@@ -133,7 +133,7 @@ function saveDowloaded(event)
         id = event.target.id_day
         posicion = event.target.posicion
         dowloadFile(event)
-        RestManager.saveDowloaded(id)
+        --RestManager.saveDowloaded(id)
     end
 end
 
@@ -293,6 +293,17 @@ function setEventosBotones()
     control[idxC].next:addEventListener( 'tap', nextAudio)
 end
 
+function verificarArchivoLocal(archivo)
+    local existe = false
+    local path = system.pathForFile( archivo, system.TemporaryDirectory )
+    local fhd = io.open( path )
+    if  fhd then
+        fhd:close()
+        existe = true
+    end
+    return existe
+end
+
 function playAudio(event)
     setEventosBotones()
 
@@ -353,10 +364,9 @@ function playAudio(event)
         
 
         if event.target.downloaded then
-            local path = system.pathForFile( event.target.file, system.TemporaryDirectory )
-            local fhd = io.open( path )
+            local path = system.pathForFile(event.target.file, system.TemporaryDirectory )
+            local fhd = verificarArchivoLocal(event.target.file)
             if fhd then
-                fhd:close()
                 local  file = event.target.file
                 control[idxP].audio = native.newVideo( display.contentCenterX, display.contentCenterY, 50, 50 )
                 control[idxP].audio:load(path, system.TemporaryDirectory )
