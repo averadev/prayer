@@ -68,6 +68,43 @@ function returnAudioCard( items )
 	
 end
 
+function audiosDownloaded( items )
+    lstDays = {}
+    for i = 1, #items, 1 do
+        local item = items[i]
+        local liked = false
+        local descargado = false
+        if (item.fav == 1) then
+            liked = true
+        end
+        if (verificarArchivoLocal(item.audio)) then
+            descargado = true
+        end
+        if  descargado then
+            
+            dia = {
+                id_day = item.id_day,
+                day = item.weekday,
+                noDate = item.day,
+                month = item.month,
+                date = item.day_date,
+                title = item.day_shortdesc,
+                subtitle = item.day_shortdesc,
+                file = item.audio,
+                fav = liked,
+                downloaded = descargado,
+                detail = item.day_longdesc
+            }
+             table.insert(lstDays, dia)
+
+        end
+    end
+    if  #lstDays > 0 then
+        createNavigationPlay()
+    end
+    
+end
+
 function deleteFile(event)
    print('Eliminando '..event.target.id_day)
 end
@@ -311,6 +348,7 @@ function playAudio(event)
         control[idxP].audio:play()
         control[idxP].play.alpha = 0
         control[idxP].pause.alpha = 1
+        cntTime = 0
         tmrPlaying = timer.performWithDelay( 1000, lstPlaying, 0 ) 
     else
         -- Destroy prev audio
@@ -665,12 +703,13 @@ function isNetworkConnection()
 	return true
 end
 
-function menssageNoLocalAudios( ... )
-    local getAudios = DBManager.getAudiosDWL()
+function getLocalAudios( ... )
+    print("Get local audios")
+    local getAudios = DBManager.getAudios()
     if not getAudios then
-     messageNoConnection()
+        messageNoConnection()
     elseif #getAudios > 0 then
-     returnAudioCard( getAudios )
+        audiosDownloaded( getAudios )
     end
     --composer.gotoScene("src.Card" )
 end
@@ -718,7 +757,7 @@ function messageNoConnection()
 
     local btnNoConnection2 = display.newRoundedRect( midW, 350, intW - 50, 70, 5 )
     btnNoConnection2:setFillColor( unpack(cPurple) )
-    btnNoConnection2:addEventListener('tap', menssageNoLocalAudios)
+    btnNoConnection2:addEventListener('tap', getLocalAudios)
     groupLoading:insert(btnNoConnection2)
 
         local lblRefresh = display.newText({

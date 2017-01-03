@@ -59,7 +59,6 @@ local dbManager = {}
 		else
 			return false
 		end
-		
 	end
 		-- obtiene los datos de audios disponibles
 	dbManager.getAudiosFav = function()
@@ -136,6 +135,7 @@ local dbManager = {}
         db:exec( query )
 		closeConnection( )
 	end
+	
 
 	-- Setup squema if it doesn't exist
 	dbManager.setupSquema = function()
