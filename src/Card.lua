@@ -368,7 +368,6 @@ function playAudio(event)
                 end
             end
         end
-        
         idxP = idxC
         tools:getIcon()
         control[idxP].play.alpha = 0
@@ -390,7 +389,6 @@ function playAudio(event)
                 control[idxP].pause.alpha = 1
                 control[idxP].loading.alpha = 0
                 control[idxP].loading:setSequence("stop")
-
                 cntTime = 0
                 curTime = control[idxP].audio.totalTime
                 jumpProgress = 300/ curTime
@@ -526,6 +524,7 @@ function getCard()
     
     -- Section Play
     control[idxC] = {}
+    
     local bgPlay = display.newRect( midW, posY, intW, 100 )
     bgPlay.anchorY = 0
     bgPlay:setFillColor( unpack(cWhite) )
@@ -623,7 +622,8 @@ end
 
 function createNavigationPlay()
 	
-	 -- Navigation
+    
+	 -- -- Navigation
     local bgScr = display.newRect( midW, h+70, intW, 80 )
     bgScr.anchorY = 0
     bgScr:setFillColor( unpack(cWhite) )
@@ -703,23 +703,14 @@ function isNetworkConnection()
 	return true
 end
 
-function getLocalAudios( ... )
-    print("Get local audios")
-    local getAudios = DBManager.getAudios()
-    if not getAudios then
-        messageNoConnection()
-    elseif #getAudios > 0 then
-        audiosDownloaded( getAudios )
-    end
-    --composer.gotoScene("src.Card" )
-end
+
 
 --------------------------------------------
 -- Muestra un mensaje cuando no se encontro conexion a internet
 --------------------------------------------
 function messageNoConnection()
 	
-	tools:setLoading( false, groupLoading )
+	tools:setLoading( true, groupLoading )
 	
 	if not groupLoading then
 		groupLoading = display.newGroup()
@@ -755,7 +746,7 @@ function messageNoConnection()
     groupLoading:insert(lblRefresh)
 
 
-    local btnNoConnection2 = display.newRoundedRect( midW, 350, intW - 50, 70, 5 )
+    btnNoConnection2 = display.newRoundedRect( midW, 350, intW - 50, 70, 5 )
     btnNoConnection2:setFillColor( unpack(cPurple) )
     btnNoConnection2:addEventListener('tap', getLocalAudios)
     groupLoading:insert(btnNoConnection2)
@@ -772,21 +763,27 @@ function messageNoConnection()
 	
 end
 
+
+function getLocalAudios( ... )
+    
+    local getAudios = DBManager.getAudios()
+    if not getAudios then
+        messageNoConnection()
+    elseif #getAudios > 0 then
+        btnNoConnection2.alpha = 0
+        tools:setLoading( false, groupLoading )
+        audiosDownloaded( getAudios )
+    end
+end
+
 function detectNetworkConnection( )
 
-	tools:setLoading( true, groupLoading )
+	tools:setLoading( false, groupLoading )
 	
 	if ( isNetworkConnection() ) then
 		RestManager.getAudios()
-        --messageNoConnection()
 	else
         messageNoConnection()
-		-- local getAudios = DBManager.getAudiosDWL()
-		-- if not getAudios then
-		-- 	messageNoConnection()
-		-- elseif #getAudios > 0 then
-		-- 	returnAudioCard( getAudios )
-		-- end
 	end
 	
 end
@@ -812,8 +809,6 @@ function scene:create( event )
 	screen:insert( groupLoading )
 
 	detectNetworkConnection()
-	
-	--createNavigationPlay()
     
 end	
 
