@@ -35,7 +35,7 @@ function messageNoConnection()
     groupLoading.y =  70 + h
     
     local lblNoConnection = display.newText({
-        text = "La aplicacion necesita conexion a internet",
+        text = "La aplicación necesita conexión a internet",
         y = 110,
         x = midW, width = intW-100,
         font = fMonRegular, 
@@ -45,7 +45,7 @@ function messageNoConnection()
     groupLoading:insert(lblNoConnection)
     
     local btnNoConnection = display.newRoundedRect( midW, 250, intW - 50, 70, 5 )
-    btnNoConnection:setFillColor( unpack(cPurple) )
+    btnNoConnection:setFillColor( gradientGold )
     groupLoading:insert(btnNoConnection)
     btnNoConnection:addEventListener( 'tap', detectNetworkConnection )
     
@@ -83,9 +83,11 @@ function scene:create( event )
 		horizontalScrollDisabled = true,
 		backgroundColor = { unpack(cGrayL) }
     })
+
     local bgScr = display.newRect( midW, h, intW, 50 )
     bgScr.anchorY = 0
-    bgScr:setFillColor( unpack(cPurple) )
+    bgScr:setFillColor( gradientGold )
+    
     local lblRefresh = display.newText({
         text = "Eliminar Descargas",
         x = midW,

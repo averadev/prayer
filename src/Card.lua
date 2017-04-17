@@ -398,7 +398,6 @@ function playAudio(event)
             end
         end
         
-
         if event.target.downloaded then
             local path = system.pathForFile(event.target.file, system.TemporaryDirectory )
             local fhd = verificarArchivoLocal(event.target.file)
@@ -473,7 +472,7 @@ function getCard()
     -- Actions
     local bgAct = display.newRect( midW, 0, intW, 70 )
     bgAct.anchorY = 0
-    bgAct:setFillColor( unpack(cPurpleH) )
+    bgAct:setFillColor( gradientGold )
     cards[idxC]:insert(bgAct)
 
     cloudIcon(item)
@@ -483,7 +482,7 @@ function getCard()
     -- Desc Section
     local bgDesc = display.newRect( midW, 70, intW, 170 )
     bgDesc.anchorY = 0
-    bgDesc:setFillColor( unpack(cPurple) )
+    bgDesc:setFillColor( unpack(cBlack) )
     cards[idxC]:insert(bgDesc)
     
     local lblDescDate = display.newText({
@@ -530,14 +529,14 @@ function getCard()
     bgPlay:setFillColor( unpack(cWhite) )
     cards[idxC]:insert(bgPlay)
     
-    control[idxC].play = display.newImage("img/iconHPlay.png")
+    control[idxC].play = display.newImage("img/iconHPlays.png")
     control[idxC].play:translate(midW, posY + 50)
     control[idxC].play.downloaded = item.downloaded
     control[idxC].play.file = item.file
     control[idxC].play:addEventListener( 'tap', playAudio)
     cards[idxC]:insert( control[idxC].play )
     
-    control[idxC].pause = display.newImage("img/iconHPause.png")
+    control[idxC].pause = display.newImage("img/iconHPauses.png")
     control[idxC].pause:translate(midW, posY + 50)
     control[idxC].pause.alpha = 0
     control[idxC].pause:addEventListener( 'tap', pauseAudio)
@@ -550,14 +549,14 @@ function getCard()
     control[idxC].loading.alpha = 0
     cards[idxC]:insert(control[idxC].loading)
     
-    control[idxC].prev = display.newImage("img/iconPDArrow.png")
-    control[idxC].prev.alpha = .5
+    control[idxC].prev = display.newImage("img/iconPDArrows.png")
+    control[idxC].prev.alpha = .8
     control[idxC].prev:translate(midW - 110, posY + 50)
     cards[idxC]:insert( control[idxC].prev )
     
-    control[idxC].next = display.newImage("img/iconPDArrow.png")
+    control[idxC].next = display.newImage("img/iconPDArrows.png")
     control[idxC].next:translate(midW + 110, posY + 50)
-    control[idxC].next.alpha = .5
+    control[idxC].next.alpha = .8
     control[idxC].next.rotation = 180
     cards[idxC]:insert( control[idxC].next )
     
@@ -569,7 +568,7 @@ function getCard()
     
     local bgBar = display.newRect( midW, posY, intW, 70 )
     bgBar.anchorY = 0
-    bgBar:setFillColor( unpack(cPurpleH) )
+    bgBar:setFillColor( unpack(cBlack) )
     control[idxC].grpProg:insert(bgBar)
     
     control[idxC].lblBarTCurrent = display.newText({
@@ -600,9 +599,8 @@ function getCard()
     control[idxC].bgBarC = display.newRect( 90, posY + 35, 1, 1 )
     control[idxC].bgBarC.anchorX = 0
     control[idxC].bgBarC.anchorY = 0
-    control[idxC].bgBarC:setFillColor( unpack(cPurple) )
+    control[idxC].bgBarC:setFillColor( unpack(cGold) )
     control[idxC].grpProg:insert(control[idxC].bgBarC)
-    
     
     -- Section Detail
     control[idxC].lblDetail = display.newText({
@@ -637,10 +635,10 @@ function createNavigationPlay()
     bgNext:setFillColor( unpack(cWhite) )
     bgNext:addEventListener( 'tap', nextCard)
     screen:insert( bgNext )
-    imgPrev = display.newImage("img/iconArrow.png")
+    imgPrev = display.newImage("img/iconArrows.png")
     imgPrev:translate(midW - 85, h+100)
     screen:insert( imgPrev )
-    imgNext = display.newImage("img/iconArrow.png")
+    imgNext = display.newImage("img/iconArrows.png")
     imgNext:translate(midW + 85, h+100)
     imgNext.rotation = 180
     screen:insert( imgNext )
@@ -677,7 +675,7 @@ function createNavigationPlay()
             font = fMonRegular, width = 150,
             fontSize = 18, align = "center"
         })
-        lblDay:setFillColor( unpack(cPurple) )
+        lblDay:setFillColor( unpack(cBlack) )
         grpDays:insert(lblDay)
     end
 	
@@ -720,7 +718,7 @@ function messageNoConnection()
 	groupLoading.y =  70 + h
 	
 	local lblNoConnection = display.newText({
-        text = "La aplicacion necesita conexion a internet",
+        text = "La aplicación necesita conexión a internet",
         y = 110,
         x = midW, width = intW-100,
         font = fMonRegular, 
@@ -730,7 +728,7 @@ function messageNoConnection()
     groupLoading:insert(lblNoConnection)
 	
 	local btnNoConnection = display.newRoundedRect( midW, 250, intW - 50, 70, 5 )
-    btnNoConnection:setFillColor( unpack(cPurple) )
+    btnNoConnection:setFillColor( gradientGold )
     groupLoading:insert(btnNoConnection)
 	btnNoConnection:addEventListener( 'tap', detectNetworkConnection )
 	
@@ -745,9 +743,8 @@ function messageNoConnection()
     lblRefresh:setFillColor( unpack(cWhite) )
     groupLoading:insert(lblRefresh)
 
-
     btnNoConnection2 = display.newRoundedRect( midW, 350, intW - 50, 70, 5 )
-    btnNoConnection2:setFillColor( unpack(cPurple) )
+    btnNoConnection2:setFillColor( gradientGold )
     btnNoConnection2:addEventListener('tap', getLocalAudios)
     groupLoading:insert(btnNoConnection2)
 

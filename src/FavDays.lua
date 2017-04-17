@@ -87,7 +87,7 @@ function getDates(items)
             font = fMonRegular, 
             fontSize = 35, align = "left"
         })
-        lblNoDate:setFillColor( unpack(cPurple) )
+        lblNoDate:setFillColor( unpack(cBlack) )
         card:insert(lblNoDate)
         
         local lblMonth = display.newText({
@@ -96,21 +96,31 @@ function getDates(items)
             font = fMonRegular, 
             fontSize = 17, align = "left"
         })
-        lblMonth:setFillColor( unpack(cPurple) )
+        lblMonth:setFillColor( unpack(cBlack) )
         card:insert(lblMonth)
         
-        local lblTitle = display.newText({
+        local lblTitle = {
             text = items[i].title,
             y = 0, width = 160,
             font = fMonRegular, 
             fontSize = 19, align = "left"
-        })
-        lblTitle:setFillColor( unpack(cPurple) )
+        }
+
+        -- extract text > 50
+        local lblTextLarge = items[i].title
+        if string.len(lblTextLarge) > 50 then
+            lblTextLarge = lblTextLarge.sub( lblTextLarge, 1, 50) .. "..."
+        end
+
+        local lblTitle = display.newText( lblTitle )
+        lblTitle.text = lblTextLarge
+
+        lblTitle:setFillColor( unpack(cBlack) )
         card:insert(lblTitle)
 
         -- Boton de accion
         local bgB1 = display.newRoundedRect(0, 90, 200, 50, 7 )
-        bgB1:setFillColor( unpack(cPurple) )
+        bgB1:setFillColor( unpack(cGold) )
         bgB1.screen = "Card"
         bgB1.item = i
         bgB1.animation = 'slideLeft'
@@ -118,7 +128,7 @@ function getDates(items)
         card:insert( bgB1 )
 
         local bgB2 = display.newRect(0, 70, 200, 10 )
-        bgB2:setFillColor( unpack(cPurple) )
+        bgB2:setFillColor( unpack(cGold) )
         card:insert( bgB2 )
         
         local lblAction = display.newText({

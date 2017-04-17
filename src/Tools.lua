@@ -34,8 +34,8 @@ function Tools:new()
         local toolbar = display.newRect( 0, 0, display.contentWidth, 70 )
         toolbar.anchorX = 0
         toolbar.anchorY = 0
-        toolbar.alpha = .9
-        toolbar:setFillColor( unpack(cPurple) )
+        toolbar.alpha = 1
+        toolbar:setFillColor( unpack(cBlack) )
         self:insert(toolbar)
 
         local iconMenu = display.newImage("img/iconMenu.png")
@@ -52,7 +52,47 @@ function Tools:new()
             iconMenuCal.animation = 'slideRight'
             iconMenuCal:addEventListener( 'tap', toScreen)
             self:insert( iconMenuCal )
-        end 
+        end
+
+        -- current How To Pray
+        if composer.getSceneName( "current" ) == "src.HowToPray" then
+            local iconMenuCal = display.newImage("img/iconMenuCal.png")
+            iconMenuCal:translate(110, 35)
+            iconMenuCal.screen = "Calendar"
+            iconMenuCal.animation = 'slideRight'
+            iconMenuCal:addEventListener( "tap", toScreen)
+            self:insert( iconMenuCal )
+        end
+
+        -- current Donations
+        if composer.getSceneName( "current" ) == "src.Donations" then
+            local iconMenuCal = display.newImage("img/iconMenuCal.png")
+            iconMenuCal:translate( 110, 35 )
+            iconMenuCal.screen = "Calendar"
+            iconMenuCal.animation = "slideRight"
+            iconMenuCal:addEventListener( "tap", toScreen )
+            self:insert( iconMenuCal )
+        end
+
+        -- current Buy Book
+        if composer.getSceneName( "current" ) == "src.BuyBook" then
+            local iconMenuCal = display.newImage("img/iconMenuCal.png")
+            iconMenuCal:translate( 110, 35)
+            iconMenuCal.screen = "Calendar"
+            iconMenuCal.animation = "slideRight"
+            iconMenuCal:addEventListener( "tap", toScreen )
+            self:insert( iconMenuCal )
+        end
+
+        -- current Author
+        if composer.getSceneName( "current" ) == "src.Author" then
+            local iconMenuCal = display.newImage("img/iconMenuCal.png")
+            iconMenuCal:translate( 110, 35 )
+            iconMenuCal.screen = "Calendar"
+            iconMenuCal.animation = "slideRight"
+            iconMenuCal:addEventListener( "tap", toScreen )
+            self:insert( iconMenuCal )
+        end
         
         iconPlaying = display.newImage("img/iconPlaying.png")
         iconPlaying.alpha = 0
@@ -88,6 +128,12 @@ function Tools:new()
     function toPrevious(event)
         local t = event.target
         composer.gotoScene(composer.getSceneName( "previous" ), { time = 400, effect = 'slideLeft' } )
+        return true
+    end
+
+    function toPreviousRight(event)
+        local t = event.target
+        composer.gotoScene(composer.getSceneName( "previous" ), { time = 400, effect = 'slideRight' } )
         return true
     end
     

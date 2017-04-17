@@ -84,4 +84,28 @@ settings =
 			"android.permission.INTERNET",
 		},
 	},
+
+	--
+	-- splashScreen settings
+	--
+	splashScreen =
+    {
+        ios = {
+            enable = false
+        },
+        android = {
+            enable = false
+        }
+    },
+
+	--
+	-- Plugins Section
+	--
+	plugins =
+    {
+        ["CoronaProvider.native.popup.social"] =
+        {
+            publisherId = "com.coronalabs"
+        },
+    },
 }

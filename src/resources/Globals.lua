@@ -13,6 +13,14 @@ h = display.topStatusBarContentHeight
 
 -- Colors
 cBlack = { 0 }
+cGold = { .76, .56, 0 }
+cGoldBG = { .64, .47, 0 }
+gradientGold = {
+    type = "gradient",
+    color1 = { .60, .44, 0 },
+    color2 = { .83, .61, 0 },
+    direction = "up"
+}
 cGrayL = { .95 }
 cWhite = { 1 }
 cPurple = { .28, .21, .3 }
@@ -22,7 +30,7 @@ fMonBold = 'Montserrat'
 fMonRegular = 'Montserrat'
 
 -- Arreglos
-lstDay = {"Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"}
+lstDay = {"Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"}
 lstMonth = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}
 
 -- TMP
