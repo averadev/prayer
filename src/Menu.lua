@@ -135,11 +135,21 @@ end
 
 function scene:create( event )
 	screen = self.view
+    screen.y = h
     
     local bgScr = display.newRect( midW, h, intW, 70 )
     bgScr.anchorY = 0
     bgScr:setFillColor( unpack(cBlack) )
     screen:insert(bgScr)
+
+    -- Icon config tap action
+    local iconConfig = display.newImage( "img/iconConfiguracion.png" )
+    iconConfig.anchorY = 0
+    iconConfig:translate(h+15, 40)
+    iconConfig.screen = "Menu"
+    iconConfig.animation = "slideRight"
+    iconConfig:addEventListener( "tap", configApp )
+    screen:insert( iconConfig )
     
     local lblTitle = display.newText({
         text = 'MENÚ',
@@ -166,14 +176,6 @@ function scene:create( event )
     lblRegresar.anchorX = 1
     lblRegresar:setFillColor( unpack(cWhite) )
     screen:insert(lblRegresar)
-
-    -- Icon config tap action
-    local iconConfig = display.newImage( "img/iconConfiguracion.png" )
-    iconConfig:translate( 45, 65 )
-    iconConfig.screen = "Menu"
-    iconConfig.animation = "slideLeft"
-    iconConfig:addEventListener( "tap", configApp )
-    screen:insert( iconConfig )
 
     -- scContainerScrollMenu
     local scContainerScroll = widget.newScrollView({
