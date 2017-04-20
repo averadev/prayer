@@ -144,7 +144,7 @@ function scene:create( event )
     screen:insert(bgScr)
 
     -- Icon config tap action
-    local iconConfig = display.newImage( "img/iconConfiguracion.png", midW - 170, menuCf + 30 )
+    local iconConfig = display.newImage( "img/iconConfiguracion.png", midW - 157, h )
     --iconConfig.anchorY = 0
     iconConfig:translate(menuCf-30, 40)
     iconConfig.screen = "Menu"
@@ -178,9 +178,11 @@ function scene:create( event )
     lblRegresar:setFillColor( unpack(cWhite) )
     screen:insert(lblRegresar)
 
+    local initSc = h + 80
+
     -- scContainerScrollMenu
     local scContainerScroll = widget.newScrollView({
-        top = h + 80,
+        top = initSc,
         left = 0,
         width = intW,
         height = 545 - (h + 10),
@@ -231,6 +233,15 @@ function scene:create( event )
         
         menuY = menuY + 70
     end
+
+    -- Background social networks
+    local intHs = display.contentHeight - h
+        
+    local bottomBar = display.newRect( 0, intHs - 35, display.contentWidth, 120 )
+    bottomBar.anchorX = 0
+    bottomBar.anchorY = 0
+    bottomBar:setFillColor( unpack( cWhite ) )
+    screen:insert(bottomBar)
     
     -- Redes Sociales
     local lblSiguenos = display.newText({

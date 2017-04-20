@@ -812,18 +812,21 @@ end
 -- Called immediately after scene has moved onscreen:
 function scene:show( event )
     if event.phase == "will" then
-		
-        --[[if event.params then
-            idxC = event.params.item
-            grpDays.x = (idxC * -160) + 320
-            moveNav()
-            if not(cards[idxC]) then
-                getCard()
+        if event.params then
+            if cards then
+                idxC = event.params.item
+                grpDays.x = (idxC * -160) + 320
+                moveNav()
+                if not(cards[idxC]) then
+                    getCard()
+                end
+                cards[idxC].x = 240
             end
-            cards[idxC].x = 240
         else
-            cards[idxC].x = 240
-        end]]
+            if cards[idxC] then
+                cards[idxC].x = 240
+            end
+        end
     end
 end
 
