@@ -136,6 +136,7 @@ end
 function scene:create( event )
 	screen = self.view
     screen.y = h
+    local menuCf = h - 30
     
     local bgScr = display.newRect( midW, h, intW, 70 )
     bgScr.anchorY = 0
@@ -143,9 +144,9 @@ function scene:create( event )
     screen:insert(bgScr)
 
     -- Icon config tap action
-    local iconConfig = display.newImage( "img/iconConfiguracion.png" )
-    iconConfig.anchorY = 0
-    iconConfig:translate(h+15, 40)
+    local iconConfig = display.newImage( "img/iconConfiguracion.png", midW - 170, menuCf + 30 )
+    --iconConfig.anchorY = 0
+    iconConfig:translate(menuCf-30, 40)
     iconConfig.screen = "Menu"
     iconConfig.animation = "slideRight"
     iconConfig:addEventListener( "tap", configApp )
