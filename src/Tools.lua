@@ -25,7 +25,7 @@ function Tools:new()
     function self:buildHeader(isWelcome)
         
         bgShadow = display.newRect( 0, 0, display.contentWidth, display.contentHeight - h )
-        bgShadow.alpha = 0
+        --bgShadow.alpha = 0
         bgShadow.anchorX = 0
         bgShadow.anchorY = 0
         bgShadow:setFillColor( 0 )
