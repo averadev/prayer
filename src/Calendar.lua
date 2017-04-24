@@ -46,6 +46,10 @@ function getDates(items)
 
         local bg = display.newRect(0, -5, 200, 220 )
         bg:setFillColor( unpack(cWhite) )
+        bg.screen = "Card"
+        bg.item = i
+        bg.animation = 'slideLeft'
+        bg:addEventListener( 'tap', toScreen)
         card:insert( bg )
         
         -- Contenido
@@ -71,7 +75,7 @@ function getDates(items)
             text = items[i].title,
             y = 0, width = 160,
             font = fMonRegular, 
-            fontSize = 19, align = "left"
+            fontSize = 16, align = "left"
         }
 
         -- extract text > 50

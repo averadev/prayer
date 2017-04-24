@@ -138,10 +138,20 @@ function scene:create( event )
     screen.y = h
     local menuCf = h - 30
     
-    local bgScr = display.newRect( midW, h, intW, 70 )
-    bgScr.anchorY = 0
-    bgScr:setFillColor( unpack(cBlack) )
-    screen:insert(bgScr)
+    -- isIOS platform status bat
+    local isIOS = "ios" == system.getInfo( "platform" )
+
+    if isIOS then
+        local bgScr = display.newRect( midW, h+0.9, intW, 70 )
+        bgScr.anchorY = 0
+        bgScr:setFillColor( unpack(cBlack) )
+        screen:insert(bgScr)
+    else
+        local bgScr = display.newRect( midW, h, intW, 70 )
+        bgScr.anchorY = 0
+        bgScr:setFillColor( unpack(cBlack) )
+        screen:insert(bgScr)
+    end
 
     -- Icon config tap action
     local iconConfig = display.newImage( "img/iconConfiguracion.png", midW - 157, h )

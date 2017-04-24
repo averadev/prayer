@@ -478,7 +478,6 @@ function getCard()
     cloudIcon(item)
     favIcon(item)
 
-    
     -- Desc Section
     local bgDesc = display.newRect( midW, 70, intW, 170 )
     bgDesc.anchorY = 0
@@ -500,7 +499,7 @@ function getCard()
         y = 135,
         x = midW, width = 400,
         font = fMonRegular, 
-        fontSize = 28, align = "left"
+        fontSize = 24, align = "left"
     })
     lblDescTitle.anchorY = 0
     lblDescTitle:setFillColor( unpack(cWhite) )
@@ -512,7 +511,7 @@ function getCard()
         y = posY,
         x = midW, width = 400,
         font = fMonRegular, 
-        fontSize = 20, align = "left"
+        fontSize = 16, align = "left"
     })
     lblDescSubTitle.anchorY = 0
     lblDescSubTitle:setFillColor( unpack(cWhite) )
@@ -734,7 +733,7 @@ function messageNoConnection()
 	
 	
 	local lblRefresh = display.newText({
-        text = "ACTUALIZAR",
+        text = "REINTENTAR",
         y = 250,
         x = midW, width = intW-100,
         font = fMonRegular, 

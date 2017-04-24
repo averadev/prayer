@@ -31,12 +31,23 @@ function Tools:new()
         bgShadow:setFillColor( 0 )
         self:insert(bgShadow)
         
-        local toolbar = display.newRect( 0, 0, display.contentWidth, 70 )
-        toolbar.anchorX = 0
-        toolbar.anchorY = 0
-        toolbar.alpha = 1
-        toolbar:setFillColor( unpack(cBlack) )
-        self:insert(toolbar)
+        local isIOS = "ios" == system.getInfo( "platform" )
+
+        if isIOS then
+            local toolbar = display.newRect( 0, 0, h+0.9, display.contentWidth, 70 )
+            toolbar.anchorX = 0
+            toolbar.anchorY = 0
+            toolbar.alpha = 1
+            toolbar:setFillColor( unpack(cBlack) )
+            self:insert(toolbar)
+        else
+            local toolbar = display.newRect( 0, 0, display.contentWidth, 70 )
+            toolbar.anchorX = 0
+            toolbar.anchorY = 0
+            toolbar.alpha = 1
+            toolbar:setFillColor( unpack(cBlack) )
+            self:insert(toolbar)
+        end
 
         local iconMenu = display.newImage("img/iconMenu.png")
         iconMenu:translate(40, 35)

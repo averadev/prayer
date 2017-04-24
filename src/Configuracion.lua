@@ -46,12 +46,13 @@ function messageNoConnection()
     
     local btnNoConnection = display.newRoundedRect( midW, 250, intW - 50, 70, 5 )
     btnNoConnection:setFillColor( gradientGold )
+    btnNoConnection.alpha = 1
     groupLoading:insert(btnNoConnection)
     btnNoConnection:addEventListener( 'tap', detectNetworkConnection )
     
     
     local lblRefresh = display.newText({
-        text = "ACTUALIZAR",
+        text = "REINTENTAR",
         y = 250,
         x = midW, width = intW-100,
         font = fMonRegular, 

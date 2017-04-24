@@ -74,8 +74,8 @@ function scene:create( event )
     scCalendar:insert( labelDescDonations )
 
     screen:insert(scCalendar)
-    local webView = native.newWebView( display.contentCenterX, display.contentCenterY, 480, 680 )
-	webView:request( "https://www.paypal.com/" )
+    -- local webView = native.newWebView( display.contentCenterX, display.contentCenterY, 480, 680 )
+	-- webView:request( "https://www.paypal.com/" )
     
 end	
 
