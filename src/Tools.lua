@@ -23,24 +23,48 @@ function Tools:new()
     -- @param isWelcome boolean pantalla principal
     ------------------------------------ 
     function self:buildHeader(isWelcome)
-        
-        bgShadow = display.newRect( 0, 0, display.contentWidth, display.contentHeight - h )
-        --bgShadow.alpha = 0
-        bgShadow.anchorX = 0
-        bgShadow.anchorY = 0
-        bgShadow:setFillColor( 0 )
-        self:insert(bgShadow)
-        
+                
         local isIOS = "ios" == system.getInfo( "platform" )
+        local resW = display.pixelWidth
+        local resH = display.pixelHeight
 
         if isIOS then
+            bgShadow = display.newRect( 0, 0, display.contentWidth, display.contentHeight - h )
+            --bgShadow.alpha = 0
+            bgShadow.anchorX = 0
+            bgShadow.anchorY = 0
+            bgShadow:setFillColor( 0 )
+            self:insert(bgShadow)
+
             local toolbar = display.newRect( 0, 0, h+0.9, display.contentWidth, 70 )
             toolbar.anchorX = 0
             toolbar.anchorY = 0
             toolbar.alpha = 1
             toolbar:setFillColor( unpack(cBlack) )
             self:insert(toolbar)
-        else
+        -- 1080x1920
+        elseif isIOS and (resW) == 1080 and (resH) == 1920 then 
+            bgShadow = display.newRect( 0, 0, display.contentWidth, display.contentHeight - h )
+            --bgShadow.alpha = 0
+            bgShadow.anchorX = 0
+            bgShadow.anchorY = 0
+            bgShadow:setFillColor( 0 )
+            self:insert(bgShadow)
+
+            local toolbar = display.newRect( 0, 0, h+0.10, display.contentWidth, 70 )
+            toolbar.anchorX = 0
+            toolbar.anchorY = 0
+            toolbar.alpha = 1
+            toolbar:setFillColor( unpack(cBlack) )
+            self:insert(toolbar)
+        else 
+            bgShadow = display.newRect( 0, 0, display.contentWidth, display.contentHeight - h )
+            bgShadow.alpha = 0
+            bgShadow.anchorX = 0
+            bgShadow.anchorY = 0
+            bgShadow:setFillColor( 0 )
+            self:insert(bgShadow)
+
             local toolbar = display.newRect( 0, 0, display.contentWidth, 70 )
             toolbar.anchorX = 0
             toolbar.anchorY = 0

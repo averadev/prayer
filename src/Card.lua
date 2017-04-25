@@ -109,6 +109,18 @@ function deleteFile(event)
    print('Eliminando '..event.target.id_day)
 end
 
+function networkListener( event )
+    local dw = false
+    if ( event.isError ) then
+        print( "Network error - download failed: ", event.response )
+    elseif ( event.phase == "began" ) then
+        print( "Progress Phase: began" )
+    elseif ( event.phase == "ended" ) then
+        dw = true
+        btndowload:setSequence("downloaded")
+    end
+    return dw
+end
 
 --- funcion para descargar el archivo
 function dowloadFile(event)
@@ -123,19 +135,6 @@ function dowloadFile(event)
         event.target.file,
         system.TemporaryDirectory
     )
-end
-
-function networkListener( event )
-    local dw = false
-    if ( event.isError ) then
-        print( "Network error - download failed: ", event.response )
-    elseif ( event.phase == "began" ) then
-        print( "Progress Phase: began" )
-    elseif ( event.phase == "ended" ) then
-        dw = true
-        btndowload:setSequence("downloaded")
-    end
-    return dw
 end
 
 function cloudIcon(item)
@@ -162,6 +161,7 @@ function cloudIcon(item)
     btndowload.file = item.file
     btndowload:addEventListener( 'tap', saveDowloaded)
 end
+
 function saveDowloaded(event)
     if event.target.isActive then
         event.target.isActive = false
@@ -174,6 +174,14 @@ function saveDowloaded(event)
     end
 end
 
+local function closeApp()
+    if system.getInfo("platform") == "Android" then
+        native.requestExit()
+    elseif system.getInfo("platform") == "ios" then
+        os.exit()
+    end
+end
+Runtime:removeEventListener( "tap", saveDowloaded )
 
 function favIcon(item)
     local sheet, loading
@@ -215,6 +223,7 @@ function saveFav(event)
         RestManager.saveFav(id)
     end
 end
+
 function deleteFav(event)
     btndislike:setSequence("dislike")
     btndislike:removeEventListener("tap", deleteFav)
@@ -289,14 +298,12 @@ function nextCard()
     end
 end
 
-
 function pauseAudio()
     timer.cancel(tmrPlaying)
     control[idxP].audio:pause()
     control[idxP].play.alpha = 1
     control[idxP].pause.alpha = 0
 end
-
 
 function prevAudio()
     if (cntTime - 5) < 0 then
@@ -758,7 +765,6 @@ function messageNoConnection()
     groupLoading:insert(lblRefresh)
 	
 end
-
 
 function getLocalAudios( ... )
     

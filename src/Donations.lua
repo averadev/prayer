@@ -58,24 +58,16 @@ function scene:create( event )
 		backgroundColor = { unpack(cGrayL) }
     })
 
-    -- Label Description Donations
-    local labelDescDonations = display.newText({
-        text = "Lorem ipsum dolor sit amet, sint nostrud splendide in eam, laudem conclusionemque cu sea. Qui dolor posidonium et. Primis iuvaret nominati eos te, duo at nostro prompta consequuntur. Duis dolores ex quo.\n\nEu nisl mollis eripuit vim. Eum eu corrumpit intellegat. Nam dicat concludaturque ex, sea at affert congue. Te sit lorem dicat etiam, exerci nostro albucius sea ei. Te melius mentitum suscipiantur sed. Hinc assueverit ad usu.\n\nQuis ignota epicuri ei vim, te abhorreant constituam qui.\n\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        x = midW, width = 420,
-        y = 20,
-        font = fMonRegular,
-        fontSize = 16, align = "left"
-    })
-    labelDescDonations.anchorY = 0
-    local posY = 135 + labelDescDonations.height
-    scCalendar:setScrollHeight( labelDescDonations.height + posY + 100 )
-
-    labelDescDonations:setFillColor( unpack( cBlack ) )
-    scCalendar:insert( labelDescDonations )
+    -- website url
+    local urlSite = "https://www.paypal.com/mx/home"
+    local webView = native.newWebView( midW, 20, 440, intH - (h + 30) )
+    webView.anchorY = 0
+    local posY = 135 + webView.height
+    scCalendar:setScrollHeight( webView.height + posY + 30 )
+    webView:request( urlSite )
+    scCalendar:insert( webView )
 
     screen:insert(scCalendar)
-    -- local webView = native.newWebView( display.contentCenterX, display.contentCenterY, 480, 680 )
-	-- webView:request( "https://www.paypal.com/" )
     
 end	
 
