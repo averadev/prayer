@@ -754,7 +754,7 @@ function messageNoConnection()
     btnNoConnection2:addEventListener('tap', getLocalAudios)
     groupLoading:insert(btnNoConnection2)
 
-        local lblRefresh = display.newText({
+    local lblRefresh = display.newText({
         text = "CARGAR GUARDADOS",
         y = 350,
         x = midW, width = intW-100,

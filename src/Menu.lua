@@ -138,11 +138,19 @@ function scene:create( event )
     screen.y = h
     local menuCf = h - 30
     
-    -- isIOS platform status bat
+    -- isIOS platform status bar
     local isIOS = "ios" == system.getInfo( "platform" )
+    local resW = display.pixelWidth
+    local resH = display.pixelHeight
 
     if isIOS then
         local bgScr = display.newRect( midW, h+0.9, intW, 70 )
+        bgScr.anchorY = 0
+        bgScr:setFillColor( unpack(cBlack) )
+        screen:insert(bgScr)
+    -- 1080x1920
+    elseif isIOS and (resW) == 1080 and (resH) == 1920 then 
+        local bgScr = display.newRect( midW, h+2, intW, 70 )
         bgScr.anchorY = 0
         bgScr:setFillColor( unpack(cBlack) )
         screen:insert(bgScr)

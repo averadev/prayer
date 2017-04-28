@@ -51,7 +51,7 @@ function Tools:new()
             bgShadow:setFillColor( 0 )
             self:insert(bgShadow)
 
-            local toolbar = display.newRect( 0, 0, h+0.10, display.contentWidth, 70 )
+            local toolbar = display.newRect( 0, 0, h+2, display.contentWidth, 70 )
             toolbar.anchorX = 0
             toolbar.anchorY = 0
             toolbar.alpha = 1
@@ -216,10 +216,3 @@ function Tools:new()
 	
     return self
 end
-
-
-
-
-
-
-

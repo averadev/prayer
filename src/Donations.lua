@@ -16,7 +16,7 @@ local DBManager = require('src.resources.DBManager')
 local RestManager = require('src.resources.RestManager')
 
 -- Grupos y Contenedores
-local screen
+local screen, webView
 local tools = Tools:new()
 local scene = composer.newScene()
 
@@ -27,20 +27,21 @@ local scene = composer.newScene()
 function scene:create( event )
 	screen = self.view
     
-    local bgScr = display.newRect( midW, h, intW, intH )
+    local bgScr = display.newRect( midW, 70, intW, intH )
     bgScr.anchorY = 0
     bgScr:setFillColor( gradientGold )
     screen:insert(bgScr)
 
     -- Label Donations
     local labelDonations = display.newText({
-        text = "Hacer una donación",
+        text = "¡Quiero Donar!\n\n¡Hola Amigo! te agradezco el interés en poder ayudar, que día con día se esfuerza para ser mejor especialmente para tí, agradecemos enormemente el que nos puedas ayudar, ¡Mil Gracias!",
         x = midW,
-        y = h+95, width = intW-50,
+        y = 200, width = 400,
         font = fMonRegular,
         fontSize = 20, align = "center"
     })
     labelDonations:setFillColor( unpack(cWhite) )
+    local posY = 135 + labelDonations.height
     screen:insert( labelDonations )
     
     -- Background
@@ -48,44 +49,38 @@ function scene:create( event )
     screen:insert(tools)
     
     -- Scrollview
-    scCalendar = widget.newScrollView(
-    {
-        top = h + 130,
-		left = 0,
-        width = intW,
-        height = intH - (h + 70),
-		horizontalScrollDisabled = true,
-		backgroundColor = { unpack(cGrayL) }
-    })
+    local bgWb = display.newRect( midW, h + 280, intW, intH - (h + 30) )
+    bgWb.anchorY = 0
+    bgWb:setFillColor( unpack(cWhite) )
+    screen:insert(bgWb)
 
-    -- website url
-    local urlSite = "https://www.paypal.com/mx/home"
-    local webView = native.newWebView( midW, 20, 440, intH - (h + 30) )
-    webView.anchorY = 0
-    local posY = 135 + webView.height
-    scCalendar:setScrollHeight( webView.height + posY + 30 )
-    webView:request( urlSite )
-    scCalendar:insert( webView )
-
-    screen:insert(scCalendar)
     
 end	
 
 -- Called immediately after scene has moved onscreen:
 function scene:show( event )
     if event.phase == "will" then
-    	
+        -- website url
+    	webView = native.newWebView( midW, h + 320, intW, intH - (h + 70) )
+        webView.anchorY = 0
+        local posY = 135 + webView.height
+        webView:request( "donations.html", system.ResourceDirectory )
+        screen:insert( webView )
     end
 end
 
 -- Remove Listener
-function scene:destroy( event )
+function scene:hide( event )
+    if webView then
+        webView:removeSelf()
+        webView = nil
+    end
 end
 
 -- Listener setup
 scene:addEventListener( "create", scene )
 scene:addEventListener( "show", scene )
-scene:addEventListener( "destroy", scene )
+scene:addEventListener( "hide", scene )
 
 
 return scene
