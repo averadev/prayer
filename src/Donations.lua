@@ -27,16 +27,17 @@ local scene = composer.newScene()
 function scene:create( event )
 	screen = self.view
     
-    local bgScr = display.newRect( midW, 70, intW, intH )
+    -- Background
+    local bgScr = display.newRect( midW, 70, intW, h+60 )
     bgScr.anchorY = 0
-    bgScr:setFillColor( gradientGold )
+    bgScr:setFillColor( unpack(cGold) )
     screen:insert(bgScr)
 
     -- Label Donations
     local labelDonations = display.newText({
-        text = "¡Quiero Donar!\n\n¡Hola Amigo! te agradezco el interés en poder ayudar, que día con día se esfuerza para ser mejor especialmente para tí, agradecemos enormemente el que nos puedas ayudar, ¡Mil Gracias!",
+        text = "Agradecemos tu donación",
         x = midW,
-        y = 200, width = 400,
+        y = h+95, width = intW-50,
         font = fMonRegular,
         fontSize = 20, align = "center"
     })
@@ -61,7 +62,7 @@ end
 function scene:show( event )
     if event.phase == "will" then
         -- website url
-    	webView = native.newWebView( midW, h + 320, intW, intH - (h + 70) )
+    	webView = native.newWebView( midW, h + 135, intW, intH - (h + 70) )
         webView.anchorY = 0
         local posY = 135 + webView.height
         webView:request( "donations.html", system.ResourceDirectory )
