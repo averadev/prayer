@@ -27,11 +27,15 @@ local scene = composer.newScene()
 function scene:create( event )
 	screen = self.view
     
+    -- Background Toolbar
+    tools:buildHeader()
+    screen:insert(tools)
+
     -- Background
-    local bgScr = display.newRect( midW, 70, intW, h+60 )
+    local bgScr = display.newRect( midW, h+70, intW, h+60 )
     bgScr.anchorY = 0
-    bgScr:setFillColor( unpack(cGold) )
-    screen:insert(bgScr)
+    bgScr:setFillColor( gradientGold )
+    screen:insert( bgScr )
 
     -- Label Donations
     local labelDonations = display.newText({
@@ -44,10 +48,6 @@ function scene:create( event )
     labelDonations:setFillColor( unpack(cWhite) )
     local posY = 135 + labelDonations.height
     screen:insert( labelDonations )
-    
-    -- Background
-    tools:buildHeader()
-    screen:insert(tools)
     
     -- Scrollview
     local bgWb = display.newRect( midW, h + 280, intW, intH - (h + 30) )

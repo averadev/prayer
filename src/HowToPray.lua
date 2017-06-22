@@ -16,8 +16,12 @@ local posY = 0
 function scene:create( event )
 	screen = self.view
 
+	-- Background Toolbar
+	tools:buildHeader()
+	screen:insert( tools )
+
 	-- Background
-	local bgHowToPray = display.newRect( midW, h, intW, intH )
+	local bgHowToPray = display.newRect( midW, h+70, intW, intH )
 	bgHowToPray.anchorY = 0
 	bgHowToPray:setFillColor( gradientGold )
 	screen:insert( bgHowToPray )
@@ -32,10 +36,6 @@ function scene:create( event )
 	})
 	labelHowToPray:setFillColor( unpack(cWhite) )
 	screen:insert( labelHowToPray )
-
-	-- Background
-	tools:buildHeader()
-	screen:insert( tools )
 
 	scContainerScroll = widget.newScrollView({
 		top = h + 130,

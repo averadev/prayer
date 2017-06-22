@@ -16,19 +16,15 @@ local posY = 0
 function scene:create( event )
 	screen = self.view
 
+	-- Background Toolbar
+	tools:buildHeader()
+	screen:insert( tools )
+
 	-- Background
-	local bgAuthor = display.newRect( midW, h, intW, intH )
+	local bgAuthor = display.newRect( midW, h+70, intW, intH )
 	bgAuthor.anchorY = 0
 	bgAuthor:setFillColor( gradientGold )
 	screen:insert( bgAuthor )
-
-	-- icon Menu
-	local iconMenu = display.newImage("img/iconMenu.png")
-    iconMenu:translate(40, 50)
-    iconMenu.screen = "Menu"
-    iconMenu.animation = 'slideRight'
-    iconMenu:addEventListener( 'tap', toScreen)
-    screen:insert( iconMenu )
 
 	-- Label Name Author
 	local labelNameAuthor = display.newText({
@@ -40,10 +36,6 @@ function scene:create( event )
 	})
 	labelNameAuthor:setFillColor( unpack(cWhite) )
 	screen:insert( labelNameAuthor )
-
-	-- Background
-	tools:buildHeader()
-	screen:insert( tools )
 
 	scContainerScroll = widget.newScrollView({
 		top = h + 130,
