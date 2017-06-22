@@ -138,7 +138,7 @@ function Tools:new()
     end
     
     function self:getIcon()
-        iconPlaying.alpha = 1
+        --iconPlaying.alpha = 1
     end
     
     -- Cambia pantalla

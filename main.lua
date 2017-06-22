@@ -7,7 +7,7 @@
 
 display.setStatusBar( display.DarkStatusBar )
 display.setDefault( "background", 1, 1, 1 )
-
+system.setIdleTimer( false )
 
 require('src.resources.Globals')
 local composer = require( "composer" )
